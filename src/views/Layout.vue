@@ -23,12 +23,19 @@
         <el-aside width="200px" style="border-right: solid 1 px rgba(0, 0, 0, 0.1)">
           <el-menu v-if="user == 'admin'" :default-active="$route.path" router unique-opened="true"
             style="height: 100%">
+
+             <el-menu-item index="/dashboard">
+              <el-icon><Odometer /></el-icon>
+              <span>动态数据</span>
+            </el-menu-item>
+
             <el-menu-item index="/monitor">
               <el-icon>
                 <Monitor />
               </el-icon>
               <span>实时监控</span>
             </el-menu-item>
+
             <el-sub-menu index="1">
               <template #title>
                 <el-icon>
@@ -49,7 +56,7 @@
                 <span>路途中</span>
               </el-menu-item>
             </el-sub-menu>
-            <el-sub-menu index="2">
+            <!-- <el-sub-menu index="2">
               <template #title>
                 <el-icon>
                   <ZoomIn />
@@ -67,7 +74,7 @@
               <el-menu-item index="/showpath">
                 <span>路径查询</span>
               </el-menu-item>
-            </el-sub-menu>
+            </el-sub-menu> -->
             <el-sub-menu index="3">
               <template #title><el-icon>
                   <Notebook />
@@ -93,6 +100,15 @@
               </el-menu-item>
               <el-menu-item index="/offsets">
                 <span>补偿统计</span>
+              </el-menu-item>
+              <el-menu-item index="/statisticsByYear">
+                <span>按年统计</span>
+              </el-menu-item>
+              <el-menu-item index="/statisticsByMonth">
+                <span>按月统计</span>
+              </el-menu-item>
+              <el-menu-item index="/statisticsByDay">
+                <span>按日统计</span>
               </el-menu-item>
             </el-sub-menu>
 
@@ -130,6 +146,11 @@
             </el-menu-item>
           </el-menu>
           <el-menu v-else :default-active="$route.path" router style="height: 100%">
+              <el-menu-item index="/dashboard">
+              <el-icon><Odometer /></el-icon>
+              <span>动态数据</span>
+            </el-menu-item>
+            
             <el-menu-item index="/auditMonitor">
               <el-icon>
                 <Monitor />
@@ -190,6 +211,7 @@
 <script setup>
 import router from "../router/index.js";
 import {
+  Odometer,
   Guide,
   Monitor,
   Notebook,
