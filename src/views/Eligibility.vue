@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <el-row :gutter="20">
+    <el-row class="row-box"gutter="20">
       <el-col :span="12">
         <el-card>
           <el-text type="info" size="large">
@@ -40,7 +40,7 @@
             </el-table-column>
             <el-table-column width="120px">
               <template #default="scope">
-                <el-button size="small" type="default" @click="detail(scope.row)">来访详情</el-button>
+                <el-button type="default" @click="detail(scope.row)">来访详情</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -106,7 +106,7 @@
             <div><el-text type="info">压表时间</el-text></div>
             <div><el-text type="info">抬表时间</el-text></div>
             <div><el-text type="info">行驶距离</el-text></div>
-            <div><el-text type="info">资格获得方式</el-text></div>
+            <div><el-text type="info">授权方式</el-text></div>
           </el-col>
           <el-col class="detail-box" :span="13">
             <div>{{ carDetail.POOL_IN_TIME }}</div>
@@ -513,13 +513,17 @@ onBeforeUnmount(() => {
   width: 100%;
   height: 100%;
 
-  .el-row {
+  .row-box {
     height: 100%;
 
     .el-card {
       position: relative;
       height: 100%;
       text-align: center;
+
+      .el-text{
+        font-size: 16px;
+      }
 
       .el-input {
         position: absolute;

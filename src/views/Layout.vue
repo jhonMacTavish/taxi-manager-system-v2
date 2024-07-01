@@ -8,7 +8,7 @@
         </el-icon>
         <div :style="`opacity: ${showLogout ? '1' : '0'}; z-index: ${showLogout ? '9' : '-1'}`" class="button-box"
           @mouseleave="mouseLeave()" @mouseenter="mouseEnter()">
-          <el-text class="logoutBtn" @click="">注销</el-text>
+          <el-text class="logoutBtn" @click="logout()">注销</el-text>
           <el-text class="logoutBtn" @click="reset()">重置</el-text>
           <div class="arrow"></div>
         </div>
@@ -163,15 +163,15 @@
               <div class="reset-content">
                 <el-row :gutter="20">
                   <el-col class="title" :span="6">账号：</el-col>
-                  <el-col :span="18"><el-input v-model="account.username" placeholder="请输账号" /></el-col>
-                </el-row>
-                <el-row :gutter="20">
-                  <el-col class="title" :span="6">新密码：</el-col>
-                  <el-col :span="18"><el-input v-model="account.username" placeholder="请输账号" /></el-col>
+                  <el-col :span="18"><el-input v-model="account.username" placeholder="请输入账号" /></el-col>
                 </el-row>
                 <el-row :gutter="20">
                   <el-col class="title" :span="6">旧密码：</el-col>
-                  <el-col :span="18"><el-input v-model="account.username" placeholder="请输账号" /></el-col>
+                  <el-col :span="18"><el-input v-model="account.old_pwd" placeholder="请输入旧密码" /></el-col>
+                </el-row>
+                <el-row :gutter="20">
+                  <el-col class="title" :span="6">新密码：</el-col>
+                  <el-col :span="18"><el-input v-model="account.new_pwd" placeholder="请输入新密码" /></el-col>
                 </el-row>
               </div>
               <div class="reset-button">
@@ -199,13 +199,15 @@ import {
   Avatar,
   DocumentRemove,
 } from "@element-plus/icons-vue";
+import axios from "axios";
 import { ref, onMounted, reactive } from "vue";
 const user = ref("");
 const showLogout = ref(false);
 const showReset = ref(false);
 const account = reactive({
   username: "",
-  password: ""
+  old_pwd: "",
+  new_pwd: ""
 })
 let timer = null;
 
@@ -224,13 +226,21 @@ const mouseEnter = () => {
   showLogout.value = true;
 };
 
-const reset = () => {
+const logout = () => {
   showReset.value = true;
-  // localStorage.clear();
-  // router.push("/login");
+  localStorage.clear();
+  router.push("/login");
 };
 
-const confirm = () => { 
+const reset = () => {
+  showReset.value = true;
+};
+
+const confirm = async () => { 
+  let params = account.value;
+  await axios.post("/api/set_pwd", params).then(res => {
+    console.log(res);
+  });
 };
 
 </script>
@@ -319,6 +329,9 @@ const confirm = () => {
   .el-icon {
     font-size: 1em;
   }
+  span{
+    font-size: 15px;
+  }
 }
 
 .main-box {
@@ -357,7 +370,9 @@ const confirm = () => {
           height: 30px;
 
           .title {
+            position: relative;
             text-align: right;
+            top: 2px;
           }
 
           .el-input {

@@ -1,8 +1,8 @@
 <template>
   <div class="container">
     <el-row>
-      <el-col :span="3"></el-col>
-      <el-col :span="18">
+      <el-col :span="2"></el-col>
+      <el-col :span="20">
         <el-card>
           <template #header>
             <div style="display: flex; justify-content: right">
@@ -29,25 +29,26 @@
                   <el-button size="small" type="default" @click="audit(scope.row)">审核</el-button>
                 </template>
               </el-table-column>
-              <el-table-column prop="carid" label="车牌" width="100px" />
-              <el-table-column prop="name" label="姓名" width="80px" />
-              <el-table-column prop="phone" label="电话" width="120px" />
-              <el-table-column prop="terminal_out_time" label="离开航站楼时间" :width="!history ? '380px' : '170px'" />
-              <el-table-column prop="createtime" :label="history ? '压表时间' : '申诉时间'" />
+              <el-table-column prop="carid" label="车牌" width="110px" />
+              <el-table-column prop="name" label="姓名" />
+              <el-table-column prop="phone" label="电话" width="130px" />
+              <el-table-column prop="createtime" label="申报时间"/>
+              <el-table-column prop="terminal_out_time" label="离开航站楼时间" />
+              <el-table-column prop="time_get_on" label="压表时间" />
               <el-table-column v-if="history" prop="run_odometer" label="里程/km" width="90px" />
               <el-table-column v-if="history" prop="name" label="审核人" width="80px" />
-              <el-table-column v-if="history" prop="terminal_out_time" label="审核时间" width="170px" />
+              <el-table-column v-if="history" prop="terminal_out_time" label="审核时间" width="180px" />
               <el-table-column :label="history ? '审核结果' : ''" width="80px">
                 <template #default="scope">
                   <el-text v-show="history" :type="scope.row.judged == 1 ? 'success' : 'warning'">{{ scope.row.judged ==
         1 ? '通过' : '驳回' }}</el-text>
                 </template>
               </el-table-column>
-              <el-table-column label="票据" width="80px">
+              <!-- <el-table-column label="票据" width="80px">
                 <template #default="scope">
                   <img :src="scope.row.pic" alt="" @click="preview(scope.row.pic)" />
                 </template>
-              </el-table-column>
+              </el-table-column> -->
             </el-table>
           </div>
           <div class="pagination-box">
@@ -56,7 +57,7 @@
           </div>
         </el-card>
       </el-col>
-      <el-col :span="3"></el-col>
+      <el-col :span="2"></el-col>
     </el-row>
     <div v-if="showImg" class="img-wrap">
       <el-button class="close" @click="showImg = false">
@@ -222,8 +223,8 @@ const audit = async (row) => {
   router.push({
     path: "/verify",
     query: {
-      processid: row.processid,
-      imgSrc: row.pic
+      judge_id: row.id,
+      processid: row.processid
     },
   });
 };
@@ -231,6 +232,11 @@ const audit = async (row) => {
 watch(history, (history) => {
   getData();
 });
+
+watch(carNo, (val) => {
+  carNo.value = val.toUpperCase();
+});
+
 
 onMounted(() => {
   init();

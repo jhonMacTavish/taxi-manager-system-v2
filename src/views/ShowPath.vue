@@ -1,28 +1,31 @@
 <template>
-  <ScrollBar class="slider" :positions="positions" :modelValue="currentPos" @playCtrl="playCtrl"
-    @handleEvent="handleEvent">
-  </ScrollBar>
-  <div class="search-box">
-    <el-config-provider :locale="locale">
-      <el-input v-model="carNo" placeholder="请输入车牌" class="input-with-select" style="max-width: 600px">
-        <template #prepend>
-          <el-date-picker style="margin: 0 -20px 0 -20px; width: 360px" v-model="dateTime" type="datetimerange"
-            range-separator="至" start-placeholder="开始时间" end-placeholder="结束时间" value-format="YYYY-MM-DD HH:mm:ss"
-            :disabled-date="disabledDate" />
-        </template>
-        <template #append>
-          <el-button @click="getPath"><el-icon>
-              <Search />
-            </el-icon></el-button>
-        </template>
-      </el-input>
-    </el-config-provider>
+  <div class="container">
+    <div id="map-box" v-loading="loading">
+      <div class="search-box">
+        <el-config-provider :locale="locale">
+          <el-input v-model="carNo" placeholder="请输入车牌" class="input-with-select" style="max-width: 600px">
+            <template #prepend>
+              <el-date-picker style="margin: 0 -20px 0 -20px; width: 360px" v-model="dateTime" type="datetimerange"
+                range-separator="至" start-placeholder="开始时间" end-placeholder="结束时间" value-format="YYYY-MM-DD HH:mm:ss"
+                :disabled-date="disabledDate" />
+            </template>
+            <template #append>
+              <el-button @click="getPath"><el-icon>
+                  <Search />
+                </el-icon></el-button>
+            </template>
+          </el-input>
+        </el-config-provider>
+      </div>
+    </div>
+    <ScrollBar class="slider" :positions="positions" :modelValue="currentPos" :iconStatus="iconStatus"
+      @playCtrl="playCtrl" @handleEvent="handleEvent" @setMovePos="setMovePos">
+    </ScrollBar>
   </div>
-  <div id="container" v-loading="loading"></div>
 </template>
 
 <script setup>
-import { onBeforeUnmount, onMounted, ref } from "vue";
+import { onBeforeUnmount, onMounted, ref, watch} from "vue";
 import { Search } from "@element-plus/icons-vue";
 import axios from "axios";
 // import https from "https";
@@ -36,25 +39,28 @@ let map = null;
 let polylineLayer = null;
 let infowindow = null;
 let marker = null;
-let tag = [];
-let count = 0;
+let path = [];
+let passedLatLngs = [];
+let offset = 0;
+
 const route = useRouter();
 const locale = zhCn;
 // const carNo = ref("");
 // const dateTime = ref([]);
-const carNo = ref("川ADU6187");
+const carNo = ref("川A");
 const dateTime = ref([
-  dayjs("2024-06-06 05:06:14").format("YYYY-MM-DD HH:mm:ss"),
-  dayjs("2024-06-06 07:06:14").format("YYYY-MM-DD HH:mm:ss"),
+  dayjs().add(-2, "hour").format("YYYY-MM-DD HH:mm:ss"),
+  dayjs().format("YYYY-MM-DD HH:mm:ss"),
 ]);
 const positions = ref([]);
 const currentPos = ref(0);
+const iconStatus = ref(true);
 const loading = ref(false);
 
 function initMap() {
   var center = new TMap.LatLng(30.31036, 104.444064);
   //初始化地图
-  map = new TMap.Map("container", {
+  map = new TMap.Map("map-box", {
     rotation: 20, //设置地图旋转角度
     pitch: 30, //设置俯仰角度（0~45）
     zoom: 12.5, //设置地图缩放级别
@@ -84,12 +90,13 @@ function initMap() {
 };
 
 function drawPath(gpsData) {
-  let path = gpsData.map((item) => {
+  path = gpsData.map((item) => {
     return new window.TMap.LatLng(item.LAT, item.LNG);
   });
-
+  console.log(path);
   try {
     if (polylineLayer) {
+      console.log("updateGeometries");
       polylineLayer.updateGeometries([
         {
           id: "erasePath", //折线唯一标识，删除时使用
@@ -125,6 +132,7 @@ function drawPath(gpsData) {
     map.setCenter(path[Math.floor(path.length / 2)]);
     map.setZoom(12.5);
     if (marker) {
+      console.log("stopMove");
       marker.stopMove();
       marker.updateGeometries([
         {
@@ -143,17 +151,26 @@ function drawPath(gpsData) {
           position: path[path.length - 1],
         },
       ]);
-      // marker.moveAlong(
-      //   {
-      //     car: {
-      //       path,
-      //       speed: 1770,
-      //     },
-      //   },
-      //   {
-      //     autoRotation: true,
-      //   }
-      // );
+      marker.on("moving", (e) => {
+        if (!e.car) return;
+        passedLatLngs = e.car && e.car.passedLatLngs;
+        let passedLth = passedLatLngs.length;
+        currentPos.value = passedLth - 1;
+        infowindow.setPosition(passedLatLngs[currentPos.value]);
+        infowindow.setContent(positions.value[currentPos.value].POSITION_TIME);
+      });
+      marker.moveAlong(
+        {
+          car: {
+            path,
+            speed: 1770,
+          },
+        },
+        {
+          autoRotation: true,
+        }
+      );
+      currentPos.value = 0;
     } else {
       marker = new TMap.MultiMarker({
         id: "car-marker",
@@ -202,19 +219,85 @@ function drawPath(gpsData) {
           },
         ],
       });
-      console.log(path);
-      // marker.moveAlong(
-      //   {
-      //     car: {
-      //       path,
-      //       speed: 1770,
-      //     },
-      //   },
-      //   {
-      //     autoRotation: true,
-      //   }
-      // );
+
+      marker.on("moving", (e) => {
+        if (!e.car) return;
+        passedLatLngs = e.car && e.car.passedLatLngs;
+        let passedLth = passedLatLngs.length;
+        currentPos.value = passedLth - 1;
+        infowindow.setPosition(passedLatLngs[currentPos.value]);
+        infowindow.setContent(positions.value[currentPos.value].POSITION_TIME);
+      });
+      marker.on("move_ended", (e) => {
+        iconStatus.value = false;
+        if (passedLatLngs.length < path.length) {
+          currentPos.value = path.length - 1;
+        }
+        console.log("move_ended");
+        marker.off("moving", (e) => { console.log("off") });
+      });
+      marker.on("move_stopped", (e) => {
+        console.log("move_stopped");
+      });
+      setTimeout(() => {
+        marker.moveAlong(
+          {
+            car: {
+              path,
+              speed: 1770,
+            },
+          },
+          {
+            autoRotation: true,
+          }
+        );
+      }, 1000);
     }
+  }
+};
+
+const handleEvent = (idx) => {
+  offset = idx;
+  path = [];
+  if (offset >= positions.value.length - 1) {
+    iconStatus.value = false;
+    return
+  } else {
+    let gpsData = positions.value.slice(offset, positions.value.length);
+    gpsData.forEach((item) => {
+      // let { LAT, LNG } = item;
+      // let latlang = wgs84ToGcj02(LAT, LNG);
+      // console.log({ LAT, LNG });
+      // console.log(latlang);
+      path.push(new window.TMap.LatLng(item.LAT, item.LNG));
+      infowindow.open();
+    });
+    marker.on("move_stopped", (e) => {
+      console.log("move_stopped");
+    });
+    marker.stopMove();
+    marker.updateGeometries([
+      {
+        id: "car",
+        styleId: "car-down",
+        position: path[0],
+      }
+    ]);
+    infowindow.setPosition(path[0]);
+    marker.off("moving", (e) => { console.log("off") });
+    marker.on("moving", (e) => {
+      passedLatLngs = e.car && e.car.passedLatLngs;
+      if (!passedLatLngs) {
+        iconStatus.value = false;
+        return
+      } else {
+        let passedLth = passedLatLngs.length;
+        currentPos.value = offset + passedLth - 1;
+        infowindow.setPosition(passedLatLngs[passedLth - 1]);
+        infowindow.setContent(positions.value[currentPos.value].POSITION_TIME);
+      }
+    });
+
     marker.moveAlong(
       {
         car: {
@@ -226,87 +309,33 @@ function drawPath(gpsData) {
         autoRotation: true,
       }
     );
-    marker.on("moving", (e) => {
-      var passedLatLngs = e.car && e.car.passedLatLngs;
-      console.log(passedLatLngs);
-      console.log(tag);
-      currentPos.value = passedLatLngs.length - 1;
-      // console.log(passedLatLngs[passedLatLngs.length - 1][0]);
-      // console.log(passedLatLngs[currentPos.value]);
-      if (passedLatLngs[passedLatLngs.length - 1].lat == path[tag[count].head].LAT && passedLatLngs[passedLatLngs.length - 1].lng == path[tag[count].head].LNG) {
-        marker.pauseMove();
-        let timer = setInterval(() => {
-          if (currentPos.value == tag[count].tail) {
-            marker.resumeMove();
-            count++;
-            clearInterval(timer);
-          } else {
-            currentPos.value++;
-          }
-        }, 100);
-        console.log(timer);
-      }
-      infowindow.setPosition(path[currentPos.value]);
-    });
+    iconStatus.value = true;
   }
 };
 
-const handleEvent = (index) => {
-  console.log(currentPos.value);
-  let path = [];
-  let gpsData = positions.value.slice(index, positions.value.length);
-  gpsData.forEach((item) => {
-    // let { LAT, LNG } = item;
-    // let latlang = wgs84ToGcj02(LAT, LNG);
-    // console.log({ LAT, LNG });
-    // console.log(latlang);
-    path.push(new window.TMap.LatLng(item.LAT, item.LNG));
-  });
-  marker.stopMove();
+const playCtrl = (play) => {
+  console.log(play);
+  if (!play) {
+    console.log()
+    marker.pauseMove();
+    iconStatus.value = false;
+  } else {
+    marker.resumeMove();
+    iconStatus.value = true;
+  }
+}
+
+const setMovePos = (pos) => {
+  let position = new window.TMap.LatLng(positions.value[pos].LAT, positions.value[pos].LNG)
   marker.updateGeometries([
     {
       id: "car",
       styleId: "car-down",
-      position: path[0],
+      position,
     }
   ]);
-  try {
-    marker.off("moving", (e) => { console.log("off") });
-    marker.on("moving", (e) => {
-      var passedLatLngs = e.car && e.car.passedLatLngs;
-      currentPos.value = passedLatLngs.length - 1;
-      console.log(currentPos.value);
-      infowindow.setPosition(path[currentPos.value]);
-    });
-    marker.moveAlong(
-      {
-        car: {
-          path,
-          speed: 1770,
-        },
-      },
-      {
-        autoRotation: true,
-      }
-    );
-  } catch (err) {
-    console.log(err);
-    let timer = setInterval(() => {
-      stopAdd();
-      console.log(currentPos.value);
-      currentPos.value++
-    }, 100);
-
-    function stopAdd() {
-      console.log(timer);
-      if (currentPos.value >= positions.value.length)
-        clearInterval(timer);
-    };
-  }
-};
-
-const playCtrl = () => {
-
+  infowindow.setPosition(position);
+  infowindow.setContent(positions.value[pos].POSITION_TIME);
 }
 
 const disabledDate = (time) => {
@@ -331,11 +360,11 @@ const getPath = async () => {
       endtime: dateTime.value[1],
     };
     loading.value = true;
-    await axios.get("/location/tencent", { params }).then((res) => {
+    await axios.get("/location/tencent_unrepeat", { params }).then((res) => {
       let data = res.data;
       loading.value = false;
       positions.value = data.positions;
-      console.log(positions.value);
+      console.log(data);
       if (!positions.value[0]) {
         ElMessage({
           message: `车辆 ${data.carid} 在 ${data.starttime} 至 ${data.endtime} 时间段内没有GPS数据`,
@@ -373,6 +402,7 @@ const getPath = async () => {
         let head = 0;
         let tail = 0;
         let trriger = false;
+        let arr = [];
         positions.value.forEach((item, index) => {
           let { LAT, LNG } = item;
           // let latlang = wgs84ToGcj02(LAT, LNG);
@@ -380,11 +410,15 @@ const getPath = async () => {
           // console.log(latlang);
           gpsData.push({ LAT, LNG });
           if (index + 1 >= positions.value.length) {
+            arr.push(item);
             return
           }
           else {
             let element = positions.value[index];
             let next = positions.value[index + 1];
+            if (next.LAT - element.LAT != 0 && next.LNG - element.LNG != 0) {
+              arr.push(item);
+            }
             if (!trriger) {
               if (next.LAT - element.LAT == 0 && next.LNG - element.LNG == 0) {
                 head = index;
@@ -401,9 +435,9 @@ const getPath = async () => {
                 return
               }
             }
-
           }
         });
+        console.log(arr);
         // axios({
         //   method: 'post',
         //   url: '/tracks/trace/upload',
@@ -437,45 +471,63 @@ const getPath = async () => {
   }
 };
 
+watch(carNo, (val) => {
+  carNo.value = val.toUpperCase();
+});
+
 onMounted(() => {
   initMap();
   let params = route.currentRoute._value.query;
-  // carNo.value = params.carNo;
-  // dateTime.value = params.dateTime;
+  if (params.dateTime) {
+    carNo.value = params.carNo;
+    dateTime.value = params.dateTime;
+    dateTime.value.forEach((item, index) => {
+      dateTime.value[index] = item.replace("T", " ");
+    });
 
-  if (carNo.value && dateTime.value[0] && dateTime.value[1]) {
-    getPath();
-  } else {
-    return
+    if (carNo.value && dateTime.value[0] && dateTime.value[1]) {
+      getPath();
+    } else {
+      return
+    }
   }
 });
 
 onBeforeUnmount(() => {
-  marker.stopMove();
+  if (!marker) {
+    return
+  } else {
+    marker.stopMove();
+  }
 });
 </script>
 
 <style lang="less" scoped>
-#container {
-  /*地图(容器)显示大小*/
-  margin-bottom: -10px;
-  width: 100%;
+.container {
   height: 100%;
-  overflow: hidden;
-  background-color: rgba(0, 0, 0, 0.1);
-}
 
-.search-box {
-  position: absolute;
-  z-index: 9999;
-  margin: 10px;
-}
+  #map-box {
+    /*地图(容器)显示大小*/
+    position: relative;
+    margin-bottom: -10px;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: rgba(0, 0, 0, 0.1);
+  }
 
-.slider {
-  position: absolute;
-  bottom: 30px;
-  left: 57%;
-  transform: translateX(-50%);
-  z-index: 9999;
+  .search-box {
+    position: absolute;
+    z-index: 9999;
+    margin: 10px;
+  }
+
+  .slider {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+  }
 }
 </style>

@@ -18,17 +18,17 @@
       </template>
       <div class="table-box">
         <el-table v-loading="loadingStatus.dataTable" :data="tableData" stripe height="740px">
-          <el-table-column prop="POOL_IN_DOOR_NAME" label="蓄车场入口道闸" width="136" />
+          <el-table-column prop="POOL_IN_DOOR_NAME" label="蓄车场入口道闸" width="140" />
           <el-table-column prop="POOL_IN_TIME" label="入池时间" width="166" />
           <el-table-column prop="TERMINAL" label="区域" width="52" />
-          <el-table-column prop="POOL_OUT_DOOR_NAME" label="蓄车场出口道闸" width="136" />
+          <el-table-column prop="POOL_OUT_DOOR_NAME" label="蓄车场出口道闸" width="140" />
           <el-table-column prop="POOL_OUT_TIME" label="出池时间" width="166" />
           <el-table-column prop="TYPE" label="类型" width="52" />
-          <el-table-column prop="TERMINAL_IN_DOOR_NAME" label="航站楼入口道闸" width="136" />
+          <el-table-column prop="TERMINAL_IN_DOOR_NAME" label="航站楼入口道闸" width="180" />
           <el-table-column prop="TERMINAL_IN_TIME" label="航站楼进入时间" width="166" />
           <el-table-column prop="LINE" label="车道" width="52" />
           <el-table-column prop="ONCE" label="人工放车" width="100" />
-          <el-table-column prop="TERMINAL_OUT_DOOR_NAME" label="航站楼出口道闸" width="136" />
+          <el-table-column prop="TERMINAL_OUT_DOOR_NAME" label="航站楼出口道闸" width="140" />
           <el-table-column prop="TERMINAL_OUT_TIME" label="航站楼外出时间" width="166" />
           <el-table-column prop="TERMINAL_OUT_DOOR_ID" label="出池依据" />
         </el-table>
@@ -39,7 +39,7 @@
 
 <script setup>
 import axios from "axios";
-import { ref, reactive } from "vue";
+import { ref, reactive, watch} from "vue";
 import dayjs from "dayjs";
 import zhCn from "element-plus/es/locale/lang/zh-cn";
 import validateCarNo from "../util/tools.js";
@@ -94,6 +94,10 @@ const getData = async (today) => {
     loadingStatus.dataTable = false;
   });
 };
+
+watch(carNo, (val) => {
+  carNo.value = val.toUpperCase();
+});
 </script>
 
 <style lang="less" scoped>

@@ -2,7 +2,7 @@
   <div class="container">
     <el-row class="content-wrap" :gutter="20">
       <el-col :span="24">
-        <el-card>
+        <el-card class="custom-card">
           <template #header>
             <div style="text-align: center">
               <el-config-provider :locale="locale">
@@ -27,16 +27,25 @@
                 </template>
               </el-input>
               <el-table v-loading="loadingStatus.T1Table" :data="filterTableData[0]" :stripe="false" height="710px"
-                :row-class-name="tableRowClassName">
+                :row-class-name="tableRowClassName" :cell-style="tableCellStyle">
                 <el-table-column prop="CAR_ID" label="车牌号" width="130px" />
-                <el-table-column sortable prop="TERMINAL_OUT_TIME" label="离开航站楼时间" />
-                <el-table-column sortable label="资格获得方式" width="140px">
+                <el-table-column sortable prop="TERMINAL_OUT_TIME" label="离开航站楼时间" width="170px" />
+                <el-table-column label="授权" width="80px" filter-placement="bottom-end" :filter-method="filterPD"
+                  :filters="[
+      { text: '系统', value: 'system' },
+      { text: '人工', value: 'admin' },
+    ]">
                   <template #default="scope">
                     <el-text :type="scope.row.PD == 'system' ? 'info' : 'warning'">{{ scope.row.PD == "system" ? "系统" :
       "人工" }}</el-text>
                   </template>
                 </el-table-column>
-                <el-table-column sortable label="资格状态">
+                <el-table-column sortable prop="EXPIRATION_TIME" label="资格过期时间" width="170px" />
+                <el-table-column label="资格状态" filter-placement="bottom-end" :filter-method="filterStatus" :filters="[
+      { text: '未使用', value: 'unused' },
+      { text: '已使用', value: 'used' },
+      { text: '已过期', value: 'expired' },
+    ]">
                   <template #default="scope">
                     <el-text>{{ scope.row.STATUS == "expired" ? "已过期" : scope.row.STATUS == "used" ? "已使用" : "未使用"
                       }}</el-text>
@@ -44,10 +53,11 @@
                 </el-table-column>
                 <el-table-column width="120px">
                   <template #default="scope">
-                    <el-button size="small" type="default" @click="detail(scope.row)">来访详情</el-button>
+                    <el-button type="default" @click="detail(scope.row)">来访详情</el-button>
                   </template>
                 </el-table-column>
-              </el-table></el-col>
+              </el-table>
+            </el-col>
             <el-col class="table-wrap" :span="12">
               <el-text type="info" size="large">
                 T2资格池:
@@ -63,14 +73,23 @@
               <el-table v-loading="loadingStatus.T1Table" :data="filterTableData[1]" :stripe="false" height="710px"
                 :row-class-name="tableRowClassName">
                 <el-table-column prop="CAR_ID" label="车牌号" width="130px" />
-                <el-table-column sortable prop="TERMINAL_OUT_TIME" label="离开航站楼时间" />
-                <el-table-column sortable label="资格获得方式" width="140px">
+                <el-table-column sortable prop="TERMINAL_OUT_TIME" label="离开航站楼时间" width="170px" />
+                <el-table-column label="授权" width="80px" filter-placement="bottom-end" :filter-method="filterPD"
+                  :filters="[
+      { text: '系统', value: 'system' },
+      { text: '人工', value: 'admin' },
+    ]">
                   <template #default="scope">
                     <el-text :type="scope.row.PD == 'system' ? 'info' : 'warning'">{{ scope.row.PD == "system" ? "系统" :
       "人工" }}</el-text>
                   </template>
                 </el-table-column>
-                <el-table-column sortable label="资格状态">
+                <el-table-column sortable prop="EXPIRATION_TIME" label="资格过期时间" width="170px" />
+                <el-table-column label="资格状态" filter-placement="bottom-end" :filter-method="filterStatus" :filters="[
+      { text: '未使用', value: 'unused' },
+      { text: '已使用', value: 'used' },
+      { text: '已过期', value: 'expired' },
+    ]">
                   <template #default="scope">
                     <el-text>{{ scope.row.STATUS == "expired" ? "已过期" : scope.row.STATUS == "used" ? "已使用" : "未使用"
                       }}</el-text>
@@ -78,10 +97,11 @@
                 </el-table-column>
                 <el-table-column width="120px">
                   <template #default="scope">
-                    <el-button size="small" type="default" @click="detail(scope.row)">来访详情</el-button>
+                    <el-button type="default" @click="detail(scope.row)">来访详情</el-button>
                   </template>
                 </el-table-column>
-              </el-table></el-col>
+              </el-table>
+            </el-col>
           </el-row>
         </el-card>
       </el-col>
@@ -100,7 +120,7 @@
             <div><el-text type="info">压表时间</el-text></div>
             <div><el-text type="info">抬表时间</el-text></div>
             <div><el-text type="info">行驶距离</el-text></div>
-            <div><el-text type="info">资格获得方式</el-text></div>
+            <div><el-text type="info">授权方式</el-text></div>
           </el-col>
           <el-col class="detail-box" :span="13">
             <div>{{ carDetail.POOL_IN_TIME }}</div>
@@ -175,6 +195,15 @@ let map = null;
 let polylineLayer = null;
 let marker = null;
 const loading = ref(false);
+
+const filterStatus = (value, row) => {
+  return row.STATUS == value;
+}
+
+const filterPD = (value, row) => {
+  console.log(row.PD, value);
+  return row.PD == value;
+}
 
 function initMap() {
   if (map) {
@@ -446,7 +475,13 @@ const tableRowClassName = (
   } else {
     return ''
   }
-}
+};
+
+const tableCellStyle = () => {
+  return {
+    // fontSize: '16px'
+  }
+};
 
 const detail = async (row) => {
   let params = {
@@ -536,7 +571,7 @@ onBeforeUnmount(() => {
   .content-wrap {
     height: 100%;
 
-    .el-card {
+    .custom-card {
       position: relative;
       height: 100%;
       text-align: center;
@@ -572,6 +607,10 @@ onBeforeUnmount(() => {
 
       .el-table .expired-row {
         --el-table-tr-bg-color: rgba(0, 0, 0, 0.1);
+      }
+
+      .el-table .cell-font{
+        font-size: 20px;
       }
     }
   }

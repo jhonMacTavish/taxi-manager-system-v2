@@ -13,7 +13,7 @@
                   <template #prepend>
                     <el-date-picker :disabled="true" style="margin: 0 -20px 0 -20px; width: 360px" v-model="dateTime"
                       type="daterange" range-separator="To" start-placeholder="开始时间" end-placeholder="结束时间"
-                      value-format="YYYY-MM-DD HH:mm:ss" :disabled-date="disabledDate" />
+                      value-format="YYYY-MM-DD HH:mm:ss" />
                   </template>
                 </el-input>
                 <el-button :disabled="true" @click="getData()"><el-icon>
@@ -26,7 +26,11 @@
             <el-table v-loading="loadingStatus.dataTable" :data="tableData" stripe height="742px">
               <el-table-column prop="CAR_ID" label="车牌" />
               <el-table-column prop="DATE" label="离开航站楼时间" />
-              <el-table-column prop="NUM" label="补偿次数" />
+              <el-table-column label="补偿次数">
+                <template #default="scope">
+                  <el-text :style="`color: ${scope.row.NUM >= 3 ? 'red' : ''}`">{{ scope.row.NUM }}</el-text>
+                </template>
+              </el-table-column>
             </el-table>
           </div>
           <!-- <div class="pagination-box">

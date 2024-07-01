@@ -4,15 +4,19 @@
     <div class="process-bar-inner" :style="innerStyle"></div>
     <div class="process-bar-slider" :style="sliderStyle"></div>
   </div>
+  <div>
+    <el-input v-model="carNo" placeholder="请输入车牌" class="input-with-select" style="max-width: 600px"></el-input>
+  </div>
 </template>
 
 <script setup>
-import { onMounted, ref, defineProps, defineEmits, computed, onUnmounted, reactive } from "vue";
+import { onMounted, ref, computed, onUnmounted, reactive, watch } from "vue";
 
 let outerOffsetLeft;
 let outer = ref(null);
 let sliding = false;
 let position = null;
+const carNo = ref('');
 
 const props = defineProps({
   modelValue: {
@@ -54,6 +58,10 @@ const sliderStyle = computed(() => {
     top: -space + 'px',
     left: currPos.value - (props.sliderWidth / 2) + 'px'
   }
+});
+
+watch(carNo, (val) => {
+  carNo.value = val.toUpperCase();
 });
 
 // const handleOuter = (e: MouseEvent) => {

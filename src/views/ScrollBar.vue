@@ -1,15 +1,15 @@
 <template>
   <!-- <div class="process-bar-outer" ref="outer" :style="outerStyle" @mousedown="handleOuter"> -->
-  <div class="process-bar-outer" ref="outer" :style="outerStyle">
+  <div id="slider" class="process-bar-outer" ref="outer" :style="outerStyle">
     <div class="process-bar-inner" :style="innerStyle"></div>
     <div class="process-bar-slider" :style="sliderStyle"></div>
-    <img v-if="!playing" class="ctrlButton" src="@/assets/image/play.png" @click="play()">
-    <img v-else class="ctrlButton" src="@/assets/image/pause.png" @click="play()">
+    <img v-if="iconStatus" class="ctrlButton" src="@/assets/image/pause.png" @click="play(false)">
+    <img v-else class="ctrlButton" src="@/assets/image/play.png" @click="play(true)">
   </div>
 </template>
 
 <script setup>
-import { onMounted, ref, defineProps, defineEmits, computed, onUnmounted, reactive } from "vue";
+import { onMounted, ref, computed, onUnmounted, reactive, watch, onBeforeUnmount } from "vue";
 
 let outerOffsetLeft = 0;
 let outer = ref(null);
@@ -17,6 +17,10 @@ let sliding = false;
 let position = null;
 
 const props = defineProps({
+  iconStatus: {
+    type: Boolean,
+    default: true
+  },
   positions: {
     type: Array,
     default: []
@@ -39,9 +43,8 @@ const props = defineProps({
   }
 });
 
-const emit = defineEmits(['handleEvent']);
+const emits = defineEmits(['handleEvent', 'playCtrl', 'setMovePos']);
 const currPos = ref(0);
-const playing = ref(true);
 const space = (props.sliderWidth - props.height) / 2;
 
 const outerStyle = computed(() => {
@@ -63,12 +66,16 @@ const sliderStyle = computed(() => {
     width: props.sliderWidth + 'px',
     height: props.sliderWidth + 'px',
     top: -space + 'px',
-    left: currPos.value || props.modelValue / props.positions.length * props.width - (props.sliderWidth / 2) + 'px'
+    left: currPos.value - (props.sliderWidth / 2) + 'px'
   }
 });
 
-const play = () => {
-  playing.value = !playing.value;
+const play = (status) => {
+  props.iconStatus = status;
+  emits('playCtrl', status);
+  if (status) {
+    emits('handleEvent', Math.round(currPos.value / props.width * props.positions.length));
+  }
 };
 
 const handleBoundary = (value) => {
@@ -79,43 +86,55 @@ const handleBoundary = (value) => {
 
 const handlMousemove = (e) => {
   if (sliding) {
-    currPos.value = handleBoundary(e.clientX - outerOffsetLeft)
+    currPos.value = handleBoundary(e.clientX - outerOffsetLeft);
+    emits('setMovePos', Math.min(Math.floor(currPos.value / props.width * props.positions.length), props.positions.length - 1));
   }
 };
 
 const handlMousedown = (e) => {
+  emits('playCtrl', false);
   if (!props.positions.length) {
     return
   }
   else if ((position.left < e.clientX && e.clientX < position.right) && (position.top < e.clientY && e.clientY < position.bottom)) {
     sliding = true;
-    currPos.value = handleBoundary(e.clientX - outerOffsetLeft);
-    console.log(currPos.value);
   }
 };
 
 const handlMouseup = (e) => {
-  if (sliding) {
-    emit('handleEvent', Math.round(currPos.value / props.width * props.positions.length));
-    console.log(currPos.value, props.width, props.positions.length);
-    console.log(Math.round(currPos.value / props.width * props.positions.length));
+  if (sliding && (position.left < e.clientX && e.clientX < position.right) && (position.top < e.clientY && e.clientY < position.bottom)) {
+    currPos.value = handleBoundary(e.clientX - outerOffsetLeft);
+    emits('handleEvent', Math.min(Math.floor(currPos.value / props.width * props.positions.length), props.positions.length - 1));
+    // console.log(Math.round(currPos.value / props.width * props.positions.length));
   }
   sliding = false;
-  playing.value = false;
 };
+
+watch(props, (props) => {
+  // console.log(props.modelValue);
+  currPos.value = props.modelValue / (props.positions.length - 1) * props.width;
+  // console.log("props.modelValue",props.modelValue,"currPos.value", currPos.value, "props.positions.length", props.positions.length);
+});
 
 onMounted(() => {
   position = reactive((outer.value).getBoundingClientRect());
   outerOffsetLeft = position.left;
-  document.addEventListener('mousemove', handlMousemove);
-  document.addEventListener('mousedown', handlMousedown);
-  document.addEventListener('mouseup', handlMouseup);
+  // document.addEventListener('mousemove', handlMousemove);
+  // document.addEventListener('mousedown', handlMousedown);
+  // document.addEventListener('mouseup', handlMouseup);
+  console.log(document.getElementById('slider'));
+  document.getElementById('slider').addEventListener('mousemove', handlMousemove);
+  document.getElementById('slider').addEventListener('mousedown', handlMousedown);
+  document.getElementById('slider').addEventListener('mouseup', handlMouseup);
 });
 
-onUnmounted(() => {
-  document.removeEventListener('mousemove', handlMousemove);
-  document.removeEventListener('mousedown', handlMousedown);
-  document.addEventListener('mouseup', handlMouseup);
+onBeforeUnmount(() => {
+  document.getElementById('slider').removeEventListener('mousemove', handlMousemove);
+  document.getElementById('slider').removeEventListener('mousedown', handlMousedown);
+  document.getElementById('slider').removeEventListener('mouseup', handlMouseup);
+  // document.removeEventListener('mousemove', handlMousemove);
+  // document.removeEventListener('mousedown', handlMousedown);
+  // document.addEventListener('mouseup', handlMouseup);
 });
 </script>
 
@@ -130,7 +149,7 @@ div {
   width: 20px;
   height: 20px;
   bottom: -5px;
-  right: -25px;
+  right: -30px;
   background-color: rgba(0, 0, 0, 0.3);
   border-radius: 50%;
   z-index: 99;

@@ -19,7 +19,6 @@ import AuditHistory from "@/views/AuditHistory.vue";
 import Eligibility from "@/views/Eligibility.vue";
 import EligibtHistory from "@/views/EligibtHistory.vue";
 import ScrollBar from "@/views/ScrollBar.vue";
-import Test from "@/views/Test.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -59,7 +58,6 @@ const router = createRouter({
         { path: "parameter", name: "parameter", component: Parameter },
         { path: "showpath", name: "showpath", component: ShowPath },
         { path: "audit", name: "audit", component: Audit },
-        { path: "test", name: "test", component: Test },
         { path: "auditHistory", name: "auditHistory", component: AuditHistory },
         { path: "blackList", name: "blackList", component: BlackList },
         {

@@ -9,7 +9,7 @@
               <el-text size="large" type="warning"> 添加黑名单 </el-text>
               <el-input
                 v-model="carNo"
-                placeholder="请输入车牌号"
+                placeholder="请输入车牌"
                 style="width: 120px; margin: 0 10px"
               />
               <el-date-picker
@@ -75,7 +75,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, watch} from "vue";
 import axios from "axios";
 import { Search } from "@element-plus/icons-vue";
 import validateCarNo from "../util/tools.js";
@@ -149,6 +149,10 @@ const deleteBlackList = async (row) => {
     getBlackList();
   });
 };
+
+watch(carNo, (val) => {
+  carNo.value = val.toUpperCase();
+});
 
 onMounted(() => {
   getBlackList();

@@ -16,12 +16,12 @@
                   <el-button :icon="Search" />
                 </template>
               </el-input>
-              <el-table v-loading="loadingStatus.T1Long1Table" :data="filterTableData[0]" stripe height="360px">
+              <el-table v-loading="loadingStatus.T1Long1Table" :data="filterTableData[0]" height="360px" :row-class-name="tableRowClassName">
                 <el-table-column prop="CAR_ID" label="车牌号" width="130px" />
                 <el-table-column prop="TERMINAL_IN_TIME" label="入池时间" />
                 <el-table-column align="right">
                   <template #default="scope">
-                    <el-button style="margin-right: 30px;" size="small" type="warning"
+                    <el-button :disabled="scope.row.GIVE_UP_TIME" style="margin-right: 30px; font-size: 15px" size="small" type="warning"
                       @click="remove(scope.row)">空车驶离</el-button>
                   </template>
                 </el-table-column>
@@ -39,12 +39,12 @@
                   <el-button :icon="Search" />
                 </template>
               </el-input>
-              <el-table v-loading="loadingStatus.T2Long1Table" :data="filterTableData[3]" stripe height="360px">
+              <el-table v-loading="loadingStatus.T2Long1Table" :data="filterTableData[3]" height="360px">
                 <el-table-column prop="CAR_ID" label="车牌号" width="130px" />
                 <el-table-column prop="TERMINAL_IN_TIME" label="入池时间" />
                 <el-table-column align="right">
                   <template #default="scope">
-                    <el-button style="margin-right: 30px;" size="small" type="warning"
+                    <el-button :disabled="scope.row.GIVE_UP_TIME" style="margin-right: 30px; font-size: 15px" size="small" type="warning"
                       @click="remove(scope.row)">空车驶离</el-button>
                   </template>
                 </el-table-column>
@@ -68,12 +68,12 @@
                   <el-button :icon="Search" />
                 </template>
               </el-input>
-              <el-table v-loading="loadingStatus.T1Long2Table" :data="filterTableData[1]" stripe height="360px">
+              <el-table v-loading="loadingStatus.T1Long2Table" :data="filterTableData[1]" height="360px">
                 <el-table-column prop="CAR_ID" label="车牌号" width="130px" />
                 <el-table-column prop="TERMINAL_IN_TIME" label="入池时间" />
                 <el-table-column align="right">
                   <template #default="scope">
-                    <el-button style="margin-right: 30px;" size="small" type="warning"
+                    <el-button :disabled="scope.row.GIVE_UP_TIME" style="margin-right: 30px; font-size: 15px" size="small" type="warning"
                       @click="remove(scope.row)">空车驶离</el-button>
                   </template>
                 </el-table-column>
@@ -91,12 +91,12 @@
                   <el-button :icon="Search" />
                 </template>
               </el-input>
-              <el-table v-loading="loadingStatus.T2Long2Table" :data="filterTableData[4]" stripe height="360px">
+              <el-table v-loading="loadingStatus.T2Long2Table" :data="filterTableData[4]" height="360px">
                 <el-table-column prop="CAR_ID" label="车牌号" width="130px" />
                 <el-table-column prop="TERMINAL_IN_TIME" label="入池时间" />
                 <el-table-column align="right">
                   <template #default="scope">
-                    <el-button style="margin-right: 30px;" size="small" type="warning"
+                    <el-button :disabled="scope.row.GIVE_UP_TIME" style="margin-right: 30px; font-size: 15px" size="small" type="warning"
                       @click="remove(scope.row)">空车驶离</el-button>
                   </template>
                 </el-table-column>
@@ -120,12 +120,12 @@
                   <el-button :icon="Search" />
                 </template>
               </el-input>
-              <el-table v-loading="loadingStatus.T1PdTable" :data="filterTableData[2]" stripe height="360px">
+              <el-table v-loading="loadingStatus.T1PdTable" :data="filterTableData[2]" height="360px">
                 <el-table-column prop="CAR_ID" label="车牌号" width="130px" />
                 <el-table-column prop="TERMINAL_IN_TIME" label="入池时间" />
                 <el-table-column align="right">
                   <template #default="scope">
-                    <el-button style="margin-right: 30px;" size="small" type="warning"
+                    <el-button :disabled="scope.row.GIVE_UP_TIME" style="margin-right: 30px; font-size: 15px" size="small" type="warning"
                       @click="remove(scope.row)">空车驶离</el-button>
                   </template>
                 </el-table-column>
@@ -143,12 +143,12 @@
                   <el-button :icon="Search" />
                 </template>
               </el-input>
-              <el-table v-loading="loadingStatus.T2PdTable" :data="filterTableData[5]" stripe height="360px">
+              <el-table v-loading="loadingStatus.T2PdTable" :data="filterTableData[5]" height="360px">
                 <el-table-column prop="CAR_ID" label="车牌号" width="130px" />
                 <el-table-column prop="TERMINAL_IN_TIME" label="入池时间" />
                 <el-table-column align="right">
                   <template #default="scope">
-                    <el-button style="margin-right: 30px;" size="small" type="warning"
+                    <el-button :disabled="scope.row.GIVE_UP_TIME" style="margin-right: 30px; font-size: 15px" size="small" type="warning"
                       @click="remove(scope.row)">空车驶离</el-button>
                   </template>
                 </el-table-column>
@@ -235,6 +235,14 @@ const loadingStatus = reactive({
   T2Long2Table: true,
   T2PdTable: true,
 });
+
+const tableRowClassName = ({row,rowIndex}) => {
+  if(row.GIVE_UP_TIME){
+    return 'passed-row'
+  } else{
+    return
+  }
+};
 
 const remove = (row) => {
   let param = {
@@ -369,6 +377,10 @@ async function init() {
           .el-table {
             border: 1px solid rgba(0, 0, 0, 0.1);
             margin-top: 15px;
+          }
+
+          .passed-row{
+            background-color: gray;
           }
         }
 
