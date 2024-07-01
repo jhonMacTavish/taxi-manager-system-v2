@@ -1,8 +1,8 @@
 import stomp from "stompjs";
 
 const config = {
-  // SERVICE: "ws://10.35.240.210:61614/stomp",
-  SERVICE: "ws://10.35.240.225:61614/stomp",  //测试
+  SERVICE: "ws://10.35.240.210:61614/stomp",
+  // SERVICE: "ws://10.35.240.225:61614/stomp",  //测试
   USERNAME: "admin",
   PASSWORD: "admin",
   TOPIC: "/topic/stoc",

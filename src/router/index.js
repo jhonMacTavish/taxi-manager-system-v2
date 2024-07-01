@@ -19,7 +19,10 @@ import AuditHistory from "@/views/AuditHistory.vue";
 import Eligibility from "@/views/Eligibility.vue";
 import EligibtHistory from "@/views/EligibtHistory.vue";
 import ScrollBar from "@/views/ScrollBar.vue";
-
+import Dashboard from "@/views/Dashboard.vue";
+import StatisticsByYear from "@/views/StatisticsByYear.vue"
+import StatisticsByMonth from "@/views/StatisticsByMonth.vue"
+import StatisticsByDay from "@/views/StatisticsByDay.vue"
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -31,8 +34,12 @@ const router = createRouter({
     },
     {
       path: "/",
-      redirect: "/monitor",
+      redirect: "/dashboard",
     },
+    // {
+    //   path: "/",
+    //   redirect: "/monitor",
+    // },
     {
       path: "/",
       name: "layout",
@@ -71,6 +78,16 @@ const router = createRouter({
         { path: "eligibility", name: "eligibility", component: Eligibility },
         { path: "eligibtHistory", name: "eligibtHistory", component: EligibtHistory },
         { path: "scrollBar", name: "scrollBar", component: ScrollBar },
+        // 新增dashboard页面
+        { path: "dashboard", name: "dashboard", component: Dashboard },
+        // 新增按年统计
+        { path: "statisticsByYear", name: "statisticsByYear", component: StatisticsByYear },
+        // 新增按月统计
+        { path: "statisticsByMonth", name: "statisticsByMonth", component: StatisticsByMonth },
+        // 
+        { path: "statisticsByDay", name: "statisticsByDay", component: StatisticsByDay },
+        
+
       ],
     },
     {
@@ -96,7 +113,7 @@ router.beforeEach((to, from, next) => {
   ) {
     next("/auditMonitor");
   } else if (localStorage.getItem("user") == "admin" && to.path == "/login") {
-    next("/monitor");
+    next("/dashboard");
   } else {
     if(!from.name){
       to.fullPath = to.path;
