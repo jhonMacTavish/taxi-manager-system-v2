@@ -24,8 +24,10 @@
           <el-menu v-if="user == 'admin'" :default-active="$route.path" router unique-opened="true"
             style="height: 100%">
 
-             <el-menu-item index="/dashboard">
-              <el-icon><Odometer /></el-icon>
+            <el-menu-item index="/dashboard">
+              <el-icon>
+                <Odometer />
+              </el-icon>
               <span>动态数据</span>
             </el-menu-item>
 
@@ -56,7 +58,7 @@
                 <span>路途中</span>
               </el-menu-item>
             </el-sub-menu>
-            <!-- <el-sub-menu index="2">
+            <el-sub-menu index="2">
               <template #title>
                 <el-icon>
                   <ZoomIn />
@@ -74,7 +76,7 @@
               <el-menu-item index="/showpath">
                 <span>路径查询</span>
               </el-menu-item>
-            </el-sub-menu> -->
+            </el-sub-menu>
             <el-sub-menu index="3">
               <template #title><el-icon>
                   <Notebook />
@@ -100,6 +102,9 @@
               </el-menu-item>
               <el-menu-item index="/offsets">
                 <span>补偿统计</span>
+              </el-menu-item>
+              <el-menu-item index="/distance">
+                <span>25km统计</span>
               </el-menu-item>
               <el-menu-item index="/statisticsByYear">
                 <span>按年统计</span>
@@ -146,11 +151,13 @@
             </el-menu-item>
           </el-menu>
           <el-menu v-else :default-active="$route.path" router style="height: 100%">
-              <el-menu-item index="/dashboard">
-              <el-icon><Odometer /></el-icon>
+            <el-menu-item index="/dashboard">
+              <el-icon>
+                <Odometer />
+              </el-icon>
               <span>动态数据</span>
             </el-menu-item>
-            
+
             <el-menu-item index="/auditMonitor">
               <el-icon>
                 <Monitor />
@@ -183,16 +190,16 @@
             <div class="reset-box">
               <div class="reset-content">
                 <el-row :gutter="20">
-                  <el-col class="title" :span="6">账号：</el-col>
-                  <el-col :span="18"><el-input v-model="account.username" placeholder="请输入账号" /></el-col>
-                </el-row>
-                <el-row :gutter="20">
                   <el-col class="title" :span="6">旧密码：</el-col>
                   <el-col :span="18"><el-input v-model="account.old_pwd" placeholder="请输入旧密码" /></el-col>
                 </el-row>
                 <el-row :gutter="20">
                   <el-col class="title" :span="6">新密码：</el-col>
                   <el-col :span="18"><el-input v-model="account.new_pwd" placeholder="请输入新密码" /></el-col>
+                </el-row>
+                <el-row :gutter="20">
+                  <el-col class="title" :span="6">确认密码：</el-col>
+                  <el-col :span="18"><el-input v-model="account.confirm_pwd" placeholder="请输入新密码" /></el-col>
                 </el-row>
               </div>
               <div class="reset-button">
@@ -227,10 +234,11 @@ const user = ref("");
 const showLogout = ref(false);
 const showReset = ref(false);
 const account = reactive({
-  username: "",
+  username: localStorage.getItem("user"),
   old_pwd: "",
-  new_pwd: ""
-})
+  new_pwd: "",
+  confirm_pwd: ""
+});
 let timer = null;
 
 onMounted(() => {
@@ -258,10 +266,46 @@ const reset = () => {
   showReset.value = true;
 };
 
-const confirm = async () => { 
-  let params = account.value;
+const confirm = async () => {
+  let params = {
+    username: account.username,
+    old_pwd: account.old_pwd,
+    new_pwd: account.new_pwd
+  };
+
+  console.log(account.new_pwd.length >= 3 && account.new_pwd.length <= 10);
   await axios.post("/api/set_pwd", params).then(res => {
     console.log(res);
+    if (account.new_pwd != account.confirm_pwd) {
+      ElMessage({
+        message: "新密码不一致",
+        type: "warning",
+      });
+    } else if (res.data.status == "error") {
+      ElMessage({
+        message: "密码输入错误",
+        type: "warning",
+      });
+    } else if (!account.new_pwd) {
+      ElMessage({
+        message: "新密码不能为空",
+        type: "warning",
+      });
+    } else if (account.new_pwd.length <= 3 || account.new_pwd.length >= 10) {
+      ElMessage({
+        message: "密码长度要在3-10之间",
+        type: "warning",
+      });
+    } else {
+      ElMessage({
+        message: "密码修改成功",
+        type: "success",
+      });
+      showReset.value = false;
+      account.old_pwd = "";
+      account.new_pwd = "";
+      account.confirm_pwd = "";
+    }
   });
 };
 
@@ -351,7 +395,8 @@ const confirm = async () => {
   .el-icon {
     font-size: 1em;
   }
-  span{
+
+  span {
     font-size: 15px;
   }
 }
@@ -372,7 +417,7 @@ const confirm = async () => {
     width: 100%;
     top: 0;
     background-color: rgba(0, 0, 0, 0.5);
-    z-index: 1;
+    z-index: 10;
 
     .reset-box {
       padding: 20px;

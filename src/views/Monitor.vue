@@ -1803,7 +1803,7 @@ function switchData(type, mark, data) {
           height: 450px;
 
           .el-button:nth-child(1) {
-            margin-top: 10px;
+            margin-top: -5px;
           }
 
           .el-button {
