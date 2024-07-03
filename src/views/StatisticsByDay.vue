@@ -51,9 +51,9 @@
                               </span>
                         </template> 
                     </vxe-column>
-                    <vxe-column field="poolInTime" title="进蓄车池" width="100" sortable align="center" ></vxe-column>
-                    <vxe-column field="pdInTime" title="蓄车池PD" width="110" sortable align="center" ></vxe-column>
-                    <vxe-column field="poolOutTime" title="出蓄车池" width="100" sortable align="center" ></vxe-column>
+                    <vxe-column field="poolInTime" title="进蓄车场" width="100" sortable align="center" ></vxe-column>
+                    <vxe-column field="pdInTime" title="进补短区" width="110" sortable align="center" ></vxe-column>
+                    <vxe-column field="poolOutTime" title="出蓄车场" width="100" sortable align="center" ></vxe-column>
                     
                     <vxe-column field="terminalInTime" title="进航站楼" width="100" sortable align="center" ></vxe-column>
                     <vxe-column field="terminalOutTime" title="出航站楼" width="100" sortable align="center" ></vxe-column>
@@ -84,7 +84,6 @@
                     </vxe-column>
 
                     <vxe-column field="judgeNote" title="驳回理由" width="100" align="center" ></vxe-column>
-                    <vxe-column field="judgePic" title="申诉票据" width="100" align="center" ></vxe-column>
                     <vxe-column field="judgeTime" title="审核时间" sortable width="100" align="center" ></vxe-column>
 
 <!-- 
@@ -131,20 +130,40 @@
     const filterName = ref('')
     const selectFilter = ref('')
     const filterTableData = computed(() => {
+        const typeMap = {
+            'long':'普通',
+            'pd':'短途优先'
+        };
+        const judgedMap = {
+                    '1': '通过',
+                    '-1': '驳回'
+            };
+        const pdMap = {
+            'system': '系统',
+            'admin': '人工'
+                };
         return tableData.value.filter((data)=>{
             const filterNameValue = filterName.value.toLowerCase();
+
             const carIdValue = data.carId? data.carId.toLowerCase() :'';
             const terminalValue = data.terminal? data.terminal.toLowerCase() :'';
+
             const typeValue = data.type? data.type.toLowerCase() :'';
+            const typeDisplayValue = typeMap[typeValue] || '';
+
             const pdValue = data.pd? data.pd.toLowerCase() :'';
-            const judgedValue = data.judged? data.judged.toLowerCase() :'';
+            const pdDisplayValue = pdMap[pdValue] || '';
+
+            const judgedValue = data.judged?data.judged.toString() :'';
+            const judgeDisplayValue = judgedMap[judgedValue] || '';
+
             const judgeNoteValue = data.judgeNote? data.judgeNote.toLowerCase() :'';
             if(selectFilter.value == 'judgeNoteSelect'){
                 return !filterNameValue|| judgeNoteValue.includes(filterNameValue)
             }else if(selectFilter.value == 'judgedSelect'){
-                return !filterNameValue|| judgedValue.includes(filterNameValue)
+                return !filterNameValue|| judgeDisplayValue.includes(filterNameValue)
             }else{
-                return !filterNameValue || carIdValue.includes(filterNameValue) || terminalValue.includes(filterNameValue) || typeValue.includes(filterNameValue) || pdValue.includes(filterNameValue) || judgedValue.includes(filterNameValue) || judgeNoteValue.includes(filterNameValue)
+                return !filterNameValue || carIdValue.includes(filterNameValue) || terminalValue.includes(filterNameValue) || typeDisplayValue.includes(filterNameValue) || pdDisplayValue.includes(filterNameValue) || judgeDisplayValue.includes(filterNameValue) || judgeNoteValue.includes(filterNameValue)
             }
         })
     })
