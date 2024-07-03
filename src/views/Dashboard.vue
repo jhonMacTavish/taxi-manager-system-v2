@@ -167,7 +167,7 @@
                     <vxe-column title="出航站楼" field="terminalOutTime" :formatter="formatTime" width="100"  align="center"  sortable></vxe-column>
 
                     <vxe-column title="空车驶离" field="giveUpTime"  :formatter="formatTime" width="100"  align="center"  sortable></vxe-column>
-                    <vxe-column title="空车驶离操作人" field="giveUpBy" :formatter="formatGiveUpBy" width="80"  align="center"</vxe-column>
+                    <vxe-column title="空车驶离操作人" field="giveUpBy"  width="80"  align="center"</vxe-column>
                     </vxe-table>
                 </div>
                
@@ -374,10 +374,7 @@ const filterTableDataSelect = computed(() => {
             'long':'普通',
             'pd':'短途优先'
         };
-        const giveUpByMap = {
-            'system': '系统',
-            'admin': '人工'
-        }
+     
     return filterTableData.value.filter((data)=>{
         const typeValue = data.type? data.type.toLowerCase() :'';
         const typeDisplayValue = typeMap[typeValue] || '';
@@ -404,9 +401,7 @@ const formatTime = ({ cellValue }) => {
 const formatType = ({ cellValue }) => {
   return cellValue === 'pd' ? '短途优先' : '普通'
 }
-const formatGiveUpBy = ({ cellValue }) => {
-  return cellValue === null ? '': (cellValue === 'system'? '系统' : '人工')
-}
+
 const filterStr = computed(() => {
 return store.state.clickTitleStr
 });
@@ -523,19 +518,48 @@ const menuConfig = reactive({
 // 拼显界面右键菜单函数
 const contextMenuClickEvent = ({ menu, row, column }) => {
     if(menu.code === 'giveup'){
-       giveUpOption(row.id) 
+       giveUpOption(row) 
     }
 }
 
-const giveUpOption = (id) => {
-    let userName = localStorage.getItem('user')
-    console.log(id,userName,"用户登录名")
-    axios.post('/api/giveup', {
-        processid:id,
-        user: userName,
-    }).then((res) => {
-        console.log(res,"空车驶离返回值")
-    })
+const giveUpOption = (row) => {
+    try {
+        let userName = localStorage.getItem('user')
+        // console.log(row.id,userName,"用户登录名")
+        ElMessageBox.confirm(
+        `是否让${row.carId}空车驶离`,
+        '警告',
+        {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        }).then(() => {
+            axios.post('/api/give_up', {
+            processid:row.id,
+            user: userName,
+            }).then((res) => {
+                console.log(res,"空车驶离返回值")
+                if(res.status === 200){
+                    ElMessage({
+                    type: 'success',
+                    message: res.data,
+                }) 
+                loadTableData2(filterStr.value);
+                }else{
+                    ElMessageBox.alert(res.data, '警告内容', {
+                        confirmButtonText: '确认',
+                        type: 'error',
+                        icon: 'delete'
+                    })
+                }
+            })
+        })
+ 
+    }catch (error) {
+        console.log(error)
+    }
+   
+    
 }
 
 

@@ -65,7 +65,8 @@
                     <vxe-column field="pd" title="短途资格下发人" width="80" align="center" >
                         <template #default="scope">
                             <span :style="{color: scope.row.pd === null ? '' : (scope.row.pd == 'system' ? 'gray' : 'orange')}">
-                                {{ scope.row.pd === null ?  '' : (scope.row.pd == 'system' ? '系统' : '人工') }}
+                                <!-- {{ scope.row.pd === null ?  '' : (scope.row.pd == 'system' ? '系统' : scope.row.pd) }} -->
+                                {{scope.row.pd }}
                               </span>
                         </template>
                     </vxe-column>
@@ -138,10 +139,10 @@
                     '1': '通过',
                     '-1': '驳回'
             };
-        const pdMap = {
-            'system': '系统',
-            'admin': '人工'
-                };
+        // const pdMap = {
+        //     'system': '系统',
+        //     'admin': '人工'
+        //         };
         return tableData.value.filter((data)=>{
             const filterNameValue = filterName.value.toLowerCase();
 
@@ -152,7 +153,7 @@
             const typeDisplayValue = typeMap[typeValue] || '';
 
             const pdValue = data.pd? data.pd.toLowerCase() :'';
-            const pdDisplayValue = pdMap[pdValue] || '';
+            // const pdDisplayValue = pdMap[pdValue] || '';
 
             const judgedValue = data.judged?data.judged.toString() :'';
             const judgeDisplayValue = judgedMap[judgedValue] || '';
@@ -163,7 +164,7 @@
             }else if(selectFilter.value == 'judgedSelect'){
                 return !filterNameValue|| judgeDisplayValue.includes(filterNameValue)
             }else{
-                return !filterNameValue || carIdValue.includes(filterNameValue) || terminalValue.includes(filterNameValue) || typeDisplayValue.includes(filterNameValue) || pdDisplayValue.includes(filterNameValue) || judgeDisplayValue.includes(filterNameValue) || judgeNoteValue.includes(filterNameValue)
+                return !filterNameValue || carIdValue.includes(filterNameValue) || terminalValue.includes(filterNameValue) || typeDisplayValue.includes(filterNameValue) || pdValue.includes(filterNameValue) || judgeDisplayValue.includes(filterNameValue) || judgeNoteValue.includes(filterNameValue)
             }
         })
     })
