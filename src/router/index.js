@@ -9,6 +9,7 @@ import StatusOnTerminal from "@/views/StatusOnTerminal.vue";
 import VisitHistory from "@/views/VisitHistory.vue";
 import Statistics from "@/views/Statistics.vue";
 import Offsets from "@/views/Offsets.vue";
+import Distance from "@/views/Distance.vue";
 import Parameter from "@/views/Parameter.vue";
 import BlackList from "@/views/BlackList.vue";
 import ShowPath from "@/views/ShowPath.vue";
@@ -64,6 +65,7 @@ const router = createRouter({
         { path: "visitHistory", name: "visitHistory", component: VisitHistory },
         { path: "statistics", name: "statistics", component: Statistics },
         { path: "offsets", name: "offsets", component: Offsets },
+        { path: "distance", name: "distance", component: Distance },
         { path: "parameter", name: "parameter", component: Parameter },
         { path: "showpath", name: "showpath", component: ShowPath },
         { path: "audit", name: "audit", component: Audit },

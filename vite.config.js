@@ -23,14 +23,14 @@ export default defineConfig({
     }
   },
   server: {
-    host: '10.86.255.32',
-    port: 8888,
+    host: '10.86.255.9',
+    port: 8080,
     open: true,
     base: './',
     proxy: {
       '/api': {
-        // target: 'http://10.35.240.219', //测试
-        target:'http://10.35.240.211:8081',//新的测试环境
+        target: 'http://10.35.240.219', //测试
+        // target:'http://10.35.240.211:8081',//新的测试环境
 
         // target: 'http://10.35.240.215',  //正式
         secure: false,
