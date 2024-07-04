@@ -14,7 +14,7 @@
                             <h3 class="title-line" @click="loadTableData('t1')">T1</h3>
                             <el-row>
                                 <el-col :span="4">
-                                    <!-- 蓄车池 -->
+                                    <!-- 蓄车场 -->
                                     <div class="pool">
                                         <div class="pool-line" @click="loadTableData('t1_pool_short')">
                                             <p class="number">{{ pool_short_1 }}</p>
@@ -24,7 +24,7 @@
                                             <p class="number">{{pool_normal_1}}</p>
                                             <p class="line">正常</p>
                                         </div>
-                                        <p class="pool-name">T1蓄车池</p>
+                                        <p class="pool-name">T1蓄车场</p>
                                     </div>
                                 </el-col>
                                 <el-col :span="8">
@@ -69,7 +69,7 @@
                             <h3 class="title-line" @click="loadTableData('t2')">T2</h3>
                             <el-row>
                                 <el-col :span="4">
-                                    <!-- 蓄车池 -->
+                                    <!-- 蓄车场 -->
                                     <div class="pool">
                                         <div class="pool-line" @click="loadTableData('t2_pool_short')">
                                             <p class="number">{{ pool_short_2 }}</p>
@@ -79,7 +79,7 @@
                                             <p class="number">{{pool_normal_2}}</p>
                                         <p class="line">正常</p>
                                         </div>
-                                        <p class="pool-name">T2蓄车池</p>
+                                        <p class="pool-name">T2蓄车场</p>
                                     </div>
                                 </el-col>
                                 <el-col :span="8">
@@ -123,41 +123,51 @@
           
             <template #footer>
                 <div class="card-footer">
-                    <h4>成都天府国际机场出租车{{tableName}}车辆数据</h4>
+                    <el-row >
+                        <el-col :span="12">
+                            <h4>成都天府国际机场出租车{{tableName}}车辆数据</h4>
+                        </el-col>
+                        <el-col :span="12">
+                            <vxe-input v-model="filterName" type="search" style="width:380px; float:right; margin-top:15px; " clearable placeholder="车牌号|航站楼|车辆类型|放车批次|强制抬杆|空车驶离" ></vxe-input>
+                        </el-col>
+                    </el-row>
+                    <!-- <div class="card-footer-header">
+                       
+                        
+                    </div> -->
+                    
                     <vxe-table
                     ref="xTable"
                     class="my-vxe-table"
                     border
                     stripe
-                    show-overflow
+                    :menu-config="menuConfig"
+                    @menu-click="contextMenuClickEvent"
                     empty-text="暂无数据"
                     height="400"
                     :column-config="{resizable: true}"
                     :row-config="{isHover: true}"
                     :scroll-y="{enabled:true}"
-                    :data=" filterTableData"
+                    :data=" filterTableDataSelect"
                     >
                     <!--  :scroll-y="{enabled:false, gt:25} -->
                     <!--   :scroll-y="{enabled:true, oSize:200}" 加上这个虚拟滚动的话，会导致页面不断的抖动，但是不加，后面可能会比较卡顿 -->
                     <vxe-column title="序号" type="seq" align="center"> </vxe-column>
-                    <vxe-column title="车牌号" field="carId" align="center" sortable></vxe-column>
+                    <vxe-column title="车牌号" field="carId" width="100" align="center" sortable></vxe-column>
                     <vxe-column title="航站楼" field="terminal" align="center"sortable></vxe-column>
-                    <vxe-column title="道闸编号" field="poolInDoorId" align="center"  sortable></vxe-column>
-                    <vxe-column title="操作人" field="once" align="center" sortable></vxe-column>
-                    <vxe-column title="进蓄车池" field="poolInTime"  align="center"sortable></vxe-column>
-
-                    <vxe-column title="车辆类型" field="type" align="center" sortable></vxe-column>
-                    <vxe-column title="进蓄车池盘短" field="pdInTime" align="center" sortable></vxe-column>
-                    <vxe-column title="出蓄车池" field="poolOutTime"  align="center"  sortable></vxe-column>
+                    <vxe-column title="进蓄车场" field="poolInTime" :formatter="formatTime" width="100"  align="center"sortable></vxe-column>
+                    <vxe-column title="车辆类型" field="type" align="center" :formatter="formatType" sortable></vxe-column>
+                    <vxe-column title="进补短区" field="pdInTime" :formatter="formatTime" width="100" align="center" sortable></vxe-column>
+                    <vxe-column title="出蓄车场" field="poolOutTime" :formatter="formatTime" width="100" align="center"  sortable></vxe-column>
                     <vxe-column title="放车批次" field="poolOutBatchId" align="center"  sortable></vxe-column>
                     <vxe-column title="放车顺序" field="poolOutBatchOrder" align="center"  sortable></vxe-column>
-                    
-                    <vxe-column title="进航站楼" field="terminalInTime"   align="center"  sortable></vxe-column>
+                    <vxe-column title="航站楼强制抬杆" field="once" width="80" align="center" ></vxe-column>
+                    <vxe-column title="进航站楼" field="terminalInTime" :formatter="formatTime" width="100"  align="center"  sortable></vxe-column>
                     <vxe-column title="车道" field="line" align="center" sortable></vxe-column>
-                    <vxe-column title="出航站楼" field="terminalOutTime"  align="center"  sortable></vxe-column>
+                    <vxe-column title="出航站楼" field="terminalOutTime" :formatter="formatTime" width="100"  align="center"  sortable></vxe-column>
 
-                    <vxe-column title="空车驶离" field="giveUpTime"   align="center"  sortable></vxe-column>
-                    <vxe-column title="空车驶离操作人" field="giveUpBy"  align="center"  sortable></vxe-column>
+                    <vxe-column title="空车驶离" field="giveUpTime"  :formatter="formatTime" width="100"  align="center"  sortable></vxe-column>
+                    <vxe-column title="空车驶离操作人" field="giveUpBy"  width="80"  align="center"</vxe-column>
                     </vxe-table>
                 </div>
                
@@ -171,6 +181,7 @@ import { ref, reactive,computed, onMounted, watch, onDeactivated, onActivated,on
 import axios from "axios";
 import Connector from "../util/connector.js";
 import { useStore } from "vuex";
+import XEUtils from 'xe-utils'
 import moment from "moment";
 const store = useStore();
 
@@ -315,7 +326,7 @@ onUnmounted(() => {
     clearInterval(timer_getTableData.value);
 });
 
-// 从蓄车池到航站楼的路途车有一个过期时间，本来是需要从api里面获取这个过期时间的，现在不需要了
+// 从蓄车场到航站楼的路途车有一个过期时间，本来是需要从api里面获取这个过期时间的，现在不需要了
 // const filterExpiredMinutes =(minutes, timeStr) =>{
 //     const currentTimeStamp = moment().valueOf();
 //     let timeStrTimeStamp =  moment(timeStr).valueOf();
@@ -342,7 +353,7 @@ onUnmounted(() => {
 // 下方的表格数据
 const xTable = ref([])
 const tableData =  ref( [])
-
+const filterName = ref('')
 const getDetailTable = async() => {
     // 老api /api/process_list
     await axios.get("/api/v1/realtime-data/detail").then((res) => {
@@ -356,6 +367,26 @@ const getDetailTable = async() => {
 }
 
 const filterTableData = ref([])
+
+const filterTableDataSelect = computed(() => {
+    const filterNameValue = filterName.value.toLowerCase();
+    const typeMap = {
+            'long':'普通',
+            'pd':'短途优先'
+        };
+     
+    return filterTableData.value.filter((data)=>{
+        const typeValue = data.type? data.type.toLowerCase() :'';
+        const typeDisplayValue = typeMap[typeValue] || '';
+        const carIdValue = data.carId? data.carId.toLowerCase() :'';
+        const terminalValue = data.terminal? data.terminal.toLowerCase() :'';
+        const poolOutBatchIdValue = data.poolOutBatchId? data.poolOutBatchId.toString() :''
+        const onceValue = data.once? data.once.toString() :'';
+        const giveUpByValue = data.giveUpBy? data.giveUpBy.toString() :'';
+        return !filterNameValue || carIdValue.includes(filterNameValue) || terminalValue.includes(filterNameValue) || poolOutBatchIdValue.includes(filterNameValue) ||typeDisplayValue.includes(filterNameValue) || onceValue.includes(filterNameValue) || giveUpByValue.includes(filterNameValue)
+        
+    })
+})
 const tableName = ref('')
 
 const loadTableData = (str) =>{
@@ -363,10 +394,18 @@ const loadTableData = (str) =>{
     store.commit("updateClickTitleStr",{clickTitleStr:str})
     loadTableData2(str)
 }
+// 格式化表中的时间
+const formatTime = ({ cellValue }) => {
+  return XEUtils.toDateString(cellValue, 'yyyy-MM-dd HH:mm:ss')
+}
+const formatType = ({ cellValue }) => {
+  return cellValue === 'pd' ? '短途优先' : '普通'
+}
 
 const filterStr = computed(() => {
 return store.state.clickTitleStr
 });
+
 // 根据存储的筛选条件进行表格的及时刷新
 const loadTableData2 = (str) => {
     switch(str){
@@ -377,14 +416,14 @@ const loadTableData2 = (str) => {
         
         case 't1_pool_short':
             filterTableData.value =   tableData.value.filter(item => item.terminal === 'T1'&& item.poolInTime != null && item.poolOutTime == null && item.type == 'pd')
-            tableName.value = 'T1蓄车池排短'
+            tableName.value = 'T1蓄车场排短'
             break;
         case 't1_pool_normal':
             filterTableData.value =   tableData.value.filter(item => item.terminal === 'T1'&& item.poolInTime != null && item.poolOutTime == null && item.type == null)
-             tableName.value = 'T1蓄车池正常'
+             tableName.value = 'T1蓄车场正常'
             break;
         case 't1_on_the_way':
-            // console.log("当前时间和出蓄车池时间是否超过设定分钟",expiredTime)
+            // console.log("当前时间和出蓄车场时间是否超过设定分钟",expiredTime)
             // filterTableData.value =   tableData.value.filter(item =>  item.terminal === 'T1'&& item.poolInTime != null && filterExpiredMinutes(expiredMinutes.value,item.poolOutTime)  && item.terminalInTime==null)
             filterTableData.value =   tableData.value.filter(item =>  item.terminal === 'T1' && item.poolOutTime != null && item.terminalInTime==null)
             tableName.value = 'T1路途'
@@ -423,11 +462,11 @@ const loadTableData2 = (str) => {
             break;
         case 't2_pool_short':
             filterTableData.value =   tableData.value.filter(item => item.terminal === 'T2'&& item.poolInTime != null && item.poolOutTime == null &&  item.type == 'pd')
-            tableName.value = 'T2蓄车池排短'
+            tableName.value = 'T2蓄车场排短'
             break;
         case 't2_pool_normal':
             filterTableData.value =   tableData.value.filter(item => item.terminal === 'T2'&& item.poolInTime != null && item.poolOutTime == null && item.type == null)
-             tableName.value = 'T2蓄车池正常'
+             tableName.value = 'T2蓄车场正常'
             break;
         case 't2_on_the_way':
             filterTableData.value =   tableData.value.filter(item =>  item.terminal === 'T2'&& item.poolOutTime != null && item.terminalOutTime==null)
@@ -462,10 +501,68 @@ const loadTableData2 = (str) => {
 
         default:
             filterTableData.value = tableData.value
-            tableName.value = ''
+            tableName.value = '全场'
             break;
         }
 }
+
+const menuConfig = reactive({
+    body: {
+    options: [
+        [
+        { code: 'giveup', name: '空车驶离' }
+        ],
+    ]
+    },
+})
+// 拼显界面右键菜单函数
+const contextMenuClickEvent = ({ menu, row, column }) => {
+    if(menu.code === 'giveup'){
+       giveUpOption(row) 
+    }
+}
+
+const giveUpOption = (row) => {
+    try {
+        let userName = localStorage.getItem('user')
+        // console.log(row.id,userName,"用户登录名")
+        ElMessageBox.confirm(
+        `是否让${row.carId}空车驶离`,
+        '警告',
+        {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        }).then(() => {
+            axios.post('/api/give_up', {
+            processid:row.id,
+            user: userName,
+            }).then((res) => {
+                console.log(res,"空车驶离返回值")
+                if(res.status === 200){
+                    ElMessage({
+                    type: 'success',
+                    message: res.data,
+                }) 
+                loadTableData2(filterStr.value);
+                }else{
+                    ElMessageBox.alert(res.data, '警告内容', {
+                        confirmButtonText: '确认',
+                        type: 'error',
+                        icon: 'delete'
+                    })
+                }
+            })
+        })
+ 
+    }catch (error) {
+        console.log(error)
+    }
+   
+    
+}
+
+
 </script>
 
 
@@ -713,6 +810,10 @@ const loadTableData2 = (str) => {
             } //card-container
             
             .card-footer{
+                .card-footer-header{
+                    display: inline-block;
+                }
+               
                 ::v-deep(.my-vxe-table.vxe-table){
                 --vxe-table-border-color: #1f4868 !important
                 }
