@@ -130,19 +130,21 @@ const auditorWhitelist = ["/auditMonitor", "/audit", "/verify", "/showpath"];
 router.beforeEach((to, from, next) => {
   if (!to.meta.isPublic && !localStorage.getItem("user")) {
     next("/login");
-  } else if (
-    localStorage.getItem("user") == "user" &&
-    !userWhitelist.includes(to.path)
-  ) {
-    next("/lvfuMonitor");
-  } else if (
-    localStorage.getItem("user") == "auditor" &&
-    !auditorWhitelist.includes(to.path)
-  ) {
-    next("/auditMonitor");
-  } else if (localStorage.getItem("user") == "admin" && to.path == "/login") {
-    next("/dashboard");
-  } else {
+  } 
+  // else if (
+  //   localStorage.getItem("user") == "lvfu" &&
+  //   !userWhitelist.includes(to.path)
+  // ) {
+  //   next("/lvfuMonitor");
+  // } else if (
+  //   localStorage.getItem("user") == "auditor" &&
+  //   !auditorWhitelist.includes(to.path)
+  // ) {
+  //   next("/auditMonitor");
+  // } else if (localStorage.getItem("user") == "admin" && to.path == "/login") {
+  //   next("/dashboard");
+  // }
+   else {
     if(!from.name){
       to.fullPath = to.path;
       to.query={};

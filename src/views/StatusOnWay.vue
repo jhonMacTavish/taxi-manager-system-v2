@@ -86,7 +86,7 @@
 
 <script setup>
 import axios from "axios";
-import { ref, onMounted, computed, reactive, onBeforeUnmount } from "vue";
+import { ref, onMounted, computed, reactive, watch, onBeforeUnmount } from "vue";
 import { Search } from "@element-plus/icons-vue";
 
 let timer = null;
@@ -128,6 +128,22 @@ const loadingStatus = reactive({
   T1ShortTable: true,
   T2LongTable: true,
   T2ShortTable: true,
+});
+
+watch(searchT1Long, (val) => {
+  searchT1Long.value = val.toUpperCase();
+});
+
+watch(searchT2Long, (val) => {
+  searchT2Long.value = val.toUpperCase();
+});
+
+watch(searchT1Short, (val) => {
+  searchT1Short.value = val.toUpperCase();
+});
+
+watch(searchT2Short, (val) => {
+  searchT2Short.value = val.toUpperCase();
 });
 
 onMounted(() => {

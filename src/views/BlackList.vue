@@ -26,7 +26,7 @@
                 :rows="2"
                 placeholder="拉黑原因"
               />
-              <el-button @click="addBlackList" style="margin-left: 10px"
+              <el-button :disabled="!func_no.includes('6')" @click="addBlackList" style="margin-left: 10px"
                 >确认</el-button
               >
             </div>
@@ -80,6 +80,7 @@ import axios from "axios";
 import { Search } from "@element-plus/icons-vue";
 import validateCarNo from "../util/tools.js";
 
+const func_no = ref([]);
 const currentPage = ref(1);
 const total = ref(0);
 const note = ref("");
@@ -156,6 +157,7 @@ watch(carNo, (val) => {
 
 onMounted(() => {
   getBlackList();
+  func_no.value = localStorage.getItem('func_no');
 });
 </script>
 

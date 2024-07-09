@@ -21,7 +21,7 @@
                 <el-table-column prop="TERMINAL_IN_TIME" label="入池时间" />
                 <el-table-column align="right">
                   <template #default="scope">
-                    <el-button :disabled="scope.row.GIVE_UP_TIME" style="margin-right: 30px; font-size: 15px" size="small" type="warning"
+                    <el-button :disabled="scope.row.GIVE_UP_TIME || !func_no.includes('4')" style="margin-right: 30px; font-size: 15px" size="small" type="warning"
                       @click="remove(scope.row)">空车驶离</el-button>
                   </template>
                 </el-table-column>
@@ -44,7 +44,7 @@
                 <el-table-column prop="TERMINAL_IN_TIME" label="入池时间" />
                 <el-table-column align="right">
                   <template #default="scope">
-                    <el-button :disabled="scope.row.GIVE_UP_TIME" style="margin-right: 30px; font-size: 15px" size="small" type="warning"
+                    <el-button :disabled="scope.row.GIVE_UP_TIME || !func_no.includes('4')" style="margin-right: 30px; font-size: 15px" size="small" type="warning"
                       @click="remove(scope.row)">空车驶离</el-button>
                   </template>
                 </el-table-column>
@@ -73,7 +73,7 @@
                 <el-table-column prop="TERMINAL_IN_TIME" label="入池时间" />
                 <el-table-column align="right">
                   <template #default="scope">
-                    <el-button :disabled="scope.row.GIVE_UP_TIME" style="margin-right: 30px; font-size: 15px" size="small" type="warning"
+                    <el-button :disabled="scope.row.GIVE_UP_TIME || !func_no.includes('4')" style="margin-right: 30px; font-size: 15px" size="small" type="warning"
                       @click="remove(scope.row)">空车驶离</el-button>
                   </template>
                 </el-table-column>
@@ -96,7 +96,7 @@
                 <el-table-column prop="TERMINAL_IN_TIME" label="入池时间" />
                 <el-table-column align="right">
                   <template #default="scope">
-                    <el-button :disabled="scope.row.GIVE_UP_TIME" style="margin-right: 30px; font-size: 15px" size="small" type="warning"
+                    <el-button :disabled="scope.row.GIVE_UP_TIME || !func_no.includes('4')" style="margin-right: 30px; font-size: 15px" size="small" type="warning"
                       @click="remove(scope.row)">空车驶离</el-button>
                   </template>
                 </el-table-column>
@@ -125,7 +125,7 @@
                 <el-table-column prop="TERMINAL_IN_TIME" label="入池时间" />
                 <el-table-column align="right">
                   <template #default="scope">
-                    <el-button :disabled="scope.row.GIVE_UP_TIME" style="margin-right: 30px; font-size: 15px" size="small" type="warning"
+                    <el-button :disabled="scope.row.GIVE_UP_TIME || !func_no.includes('4')" style="margin-right: 30px; font-size: 15px" size="small" type="warning"
                       @click="remove(scope.row)">空车驶离</el-button>
                   </template>
                 </el-table-column>
@@ -148,7 +148,7 @@
                 <el-table-column prop="TERMINAL_IN_TIME" label="入池时间" />
                 <el-table-column align="right">
                   <template #default="scope">
-                    <el-button :disabled="scope.row.GIVE_UP_TIME" style="margin-right: 30px; font-size: 15px" size="small" type="warning"
+                    <el-button :disabled="scope.row.GIVE_UP_TIME || !func_no.includes('4')" style="margin-right: 30px; font-size: 15px" size="small" type="warning"
                       @click="remove(scope.row)">空车驶离</el-button>
                   </template>
                 </el-table-column>
@@ -174,10 +174,11 @@
 
 <script setup>
 import axios from "axios";
-import { ref, onMounted, computed, reactive, onBeforeUnmount } from "vue";
+import { ref, onMounted, computed, reactive, watch, onBeforeUnmount } from "vue";
 import { Search } from "@element-plus/icons-vue";
 
 let timer = null;
+const func_no = ref([]);
 const dialogVisible = ref(false);
 const carID = ref('');
 const params = ref({});
@@ -272,13 +273,38 @@ const confirm = async () => {
     }
   });
   dialogVisible.value = false;
-}
+};
+
+watch(searchT1Long1, (val) => {
+  searchT1Long1.value = val.toUpperCase();
+});
+
+watch(searchT2Long1, (val) => {
+  searchT2Long1.value = val.toUpperCase();
+});
+
+watch(searchT1Long2, (val) => {
+  searchT1Long2.value = val.toUpperCase();
+});
+
+watch(searchT2Long2, (val) => {
+  searchT2Long2.value = val.toUpperCase();
+});
+
+watch(searchT1Long3, (val) => {
+  searchT1Long3.value = val.toUpperCase();
+});
+
+watch(searchT2Short1, (val) => {
+  searchT2Short1.value = val.toUpperCase();
+});
 
 onMounted(() => {
   init();
   timer = setInterval(function () {
     init();
   }, 10000);
+  func_no.value = localStorage.getItem('func_no');
 });
 
 onBeforeUnmount(() => {

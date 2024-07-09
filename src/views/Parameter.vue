@@ -5,35 +5,21 @@
         <el-table-column prop="NOTE" label="参数" width="380" />
         <el-table-column prop="VALUE" label="有效期">
           <template #default="scope">
-            <el-input
-              class="input"
-              v-model="inputValue[scope.$index]"
-              :disabled="!scope.row.isEdit"
-              oninput="value=value.replace(/[^\d]/g,'')"
-            />
+            <el-input class="input" v-model="inputValue[scope.$index]" :disabled="!scope.row.isEdit"
+              oninput="value=value.replace(/[^\d]/g,'')" />
           </template>
         </el-table-column>
         <el-table-column label="">
           <template #default="scope">
-            <el-button
-              v-show="!scope.row.isEdit"
-              @click="scope.row.isEdit = !scope.row.isEdit"
-            >
+            <el-button :disabled="!func_no.includes('7') ? true : !scope.row.NAME.includes('carnum_pool')"
+              v-show="!scope.row.isEdit" @click="scope.row.isEdit = !scope.row.isEdit">
               编辑
             </el-button>
-            <el-button
-              plain
-              class="edit"
-              type="primary"
-              v-show="scope.row.isEdit"
-              @click="submit(scope.$index, scope.row)"
-            >
+            <el-button plain class="edit" type="primary" v-show="scope.row.isEdit"
+              @click="submit(scope.$index, scope.row)">
               确定
             </el-button>
-            <el-button
-              v-show="scope.row.isEdit"
-              @click="cancle(scope.$index, scope.row)"
-            >
+            <el-button v-show="scope.row.isEdit" @click="cancle(scope.$index, scope.row)">
               取消
             </el-button>
           </template>
@@ -47,11 +33,13 @@
 import { onMounted, ref } from "vue";
 import axios from "axios";
 
+const func_no = ref([]);
 const tableData = ref([]);
 const inputValue = ref([]);
 
 onMounted(() => {
   init();
+  func_no.value = localStorage.getItem('func_no');
 });
 
 async function init() {
@@ -65,7 +53,7 @@ async function init() {
   });
 }
 
-const submit = async(index, row) => {
+const submit = async (index, row) => {
   console.log(inputValue.value[index]);
   if (!inputValue.value[index]) {
     ElMessage({
@@ -104,6 +92,7 @@ const cancle = (index, row) => {
   height: 100%;
   width: 100%;
   line-height: 100%;
+
   .el-card {
     position: relative;
     display: inline-block;
@@ -111,10 +100,12 @@ const cancle = (index, row) => {
     top: 50%;
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
+
     .el-table {
       .input {
         width: 80px;
       }
+
       .edit {
         margin-left: 0px;
       }

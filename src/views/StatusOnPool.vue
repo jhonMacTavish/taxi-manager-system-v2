@@ -45,7 +45,7 @@
 
 <script setup>
 import axios from "axios";
-import { ref, onMounted, computed, reactive, onBeforeUnmount } from "vue";
+import { ref, onMounted, computed, reactive, watch, onBeforeUnmount } from "vue";
 import { Search } from "@element-plus/icons-vue";
 
 let timer = null;
@@ -71,6 +71,14 @@ const filterTableData = computed(() => {
 const loadingStatus = reactive({
   T1Table: true,
   T2Table: true,
+});
+
+watch(searchT1, (val) => {
+  searchT1.value = val.toUpperCase();
+});
+
+watch(searchT2, (val) => {
+  searchT2.value = val.toUpperCase();
 });
 
 onMounted(() => {

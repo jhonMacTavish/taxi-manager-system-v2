@@ -136,7 +136,7 @@
 
 <script setup>
 import axios from "axios";
-import { ref, onMounted, computed, reactive, onBeforeUnmount } from "vue";
+import { ref, onMounted, computed, reactive, watch, onBeforeUnmount } from "vue";
 import { Search, Close } from "@element-plus/icons-vue";
 import dayjs from "dayjs";
 
@@ -500,6 +500,14 @@ onMounted(() => {
     init();
     console.log(timer);
   }, 10000);
+});
+
+watch(searchT1, (val) => {
+  searchT1.value = val.toUpperCase();
+});
+
+watch(searchT2, (val) => {
+  searchT2.value = val.toUpperCase();
 });
 
 onBeforeUnmount(() => {

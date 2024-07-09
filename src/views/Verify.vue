@@ -29,7 +29,7 @@
             </div>
             <div class="button-wrap">
               <el-button class="button" type="warning" plain @click="authorize" style="width: 110px"
-                :disabled="!!judge_id">授权</el-button>
+                :disabled="!!judge_id || !func_no.includes('5')">授权</el-button>
             </div>
           </div>
         </el-card>
@@ -209,7 +209,7 @@
           </el-table-column>
         </el-table>
         <div v-if="!tableData.length && judge_id" class="table-mark">
-          <el-button @click="gotoShowPath(-1)">查询路径</el-button>
+          <el-button @click="gotoShowPath(-1, 0)">查询路径</el-button>
         </div>
       </el-col>
       <el-col :span="3"></el-col>
@@ -291,6 +291,7 @@ const route = useRouter();
 const locale = zhCn;
 
 let Index = null;
+const func_no = ref([]);
 const flag = ref(false);
 const showImg = ref(false);
 const showReject = ref(false);
@@ -436,7 +437,7 @@ const audit = async (state) => {
     } else {
       if (!reviewTime.value) {
         ElMessage({
-          message: "复核时间输入错误",
+          message: "压表时间输入错误",
           type: "warning",
         });
       } else {
@@ -489,6 +490,7 @@ const gotoShowPath = (state, index, tag) => {
       ];
     }
   } else {
+    console.log(processData.value);
     dateTime = [
       dayjs(processData.value[index].TERMINAL_OUT_TIME).add(-2, "hour").format("YYYY-MM-DD HH:mm:ss"),
       dayjs(processData.value[index].TERMINAL_OUT_TIME).add(2, "hour").format("YYYY-MM-DD HH:mm:ss"),
@@ -678,6 +680,7 @@ onActivated(async () => {
       console.log(res.data);
     });
   }
+  func_no.value = localStorage.getItem('func_no');
 });
 
 onDeactivated(() => {

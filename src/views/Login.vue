@@ -48,17 +48,10 @@ const login = async () => {
     let userInfo = res.data;
     console.log(userInfo);
     if (userInfo.status == "success") {
-      if (userInfo.username == "admin") {
-        window.sessionStorage.clear();
-        localStorage.setItem("user", "admin");
-      } else if (userInfo.username == "public") {
-        window.sessionStorage.clear();
-        localStorage.setItem("user", "auditor");
-      } else if (userInfo.username == "lvfu") {
-        window.sessionStorage.clear();
-        localStorage.setItem("user", "user");
-      } else {
-      }
+      window.sessionStorage.clear();
+      localStorage.setItem("user", userInfo.username);
+      localStorage.setItem("func_no", userInfo.func_no);
+      console.log(localStorage.getItem('func_no'));
       router.push("/");
     } else {
       ElMessage({

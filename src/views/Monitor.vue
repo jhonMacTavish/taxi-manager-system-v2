@@ -296,7 +296,7 @@
               <el-text class="mx-1" type="primary" size="large">放行操作</el-text>
             </template>
             <div class="cascader-box">
-              <el-cascader v-model="cascaderValue" :options="optionsCascader" popper-class="cascader-style"
+              <el-cascader :disabled="false || !func_no.includes('1')" v-model="cascaderValue" :options="optionsCascader" popper-class="cascader-style"
                 @change="handleChange" />
             </div>
           </el-card>
@@ -371,27 +371,27 @@
             <el-row :span="24">
               <el-col :span="4">
                 <div class="button-box">
-                  <el-button @click="setDoorOnce(1)" :style="`background-color: ${doorStatus.T1Pd1 ? 'orange' : ''
+                  <el-button :disabled="!func_no.includes('3')" @click="setDoorOnce(1)" :style="`background-color: ${doorStatus.T1Pd1 ? 'orange' : ''
       }`">
                     放车
                   </el-button>
-                  <el-button @click="setDoorOnce(2)" :style="`background-color: ${doorStatus.T1Long1 ? 'orange' : ''
+                  <el-button :disabled="!func_no.includes('3')" @click="setDoorOnce(2)" :style="`background-color: ${doorStatus.T1Long1 ? 'orange' : ''
       }`">
                     放车
                   </el-button>
-                  <el-button @click="setDoorOnce(3)" :style="`background-color: ${doorStatus.T1Long2 ? 'orange' : ''
+                  <el-button :disabled="!func_no.includes('3')" @click="setDoorOnce(3)" :style="`background-color: ${doorStatus.T1Long2 ? 'orange' : ''
       }`">
                     放车
                   </el-button>
-                  <el-button @click="setDoorOnce(4)" :style="`background-color: ${doorStatus.T2Long1 ? 'orange' : ''
+                  <el-button :disabled="!func_no.includes('3')" @click="setDoorOnce(4)" :style="`background-color: ${doorStatus.T2Long1 ? 'orange' : ''
       }`">
                     放车
                   </el-button>
-                  <el-button @click="setDoorOnce(5)" :style="`background-color: ${doorStatus.T2Long2 ? 'orange' : ''
+                  <el-button :disabled="!func_no.includes('3')" @click="setDoorOnce(5)" :style="`background-color: ${doorStatus.T2Long2 ? 'orange' : ''
       }`">
                     放车
                   </el-button>
-                  <el-button @click="setDoorOnce(6)" :style="`background-color: ${doorStatus.T2Pd1 ? 'orange' : ''
+                  <el-button :disabled="!func_no.includes('3')" @click="setDoorOnce(6)" :style="`background-color: ${doorStatus.T2Pd1 ? 'orange' : ''
       }`">
                     放车
                   </el-button>
@@ -443,6 +443,7 @@ let echartDashbd = null;
 let echartOnroad = null;
 let echartTermnl = null;
 
+const func_no = ref([]);
 const taxiData = reactive({
   pool: {
     T1: { max: 300, num: 0 },
@@ -1172,7 +1173,7 @@ watch(
 
 onMounted(() => {
   init();
-  //console.log(client);
+  func_no.value = localStorage.getItem('func_no');
 });
 
 onBeforeUnmount(() => {
@@ -1304,7 +1305,7 @@ async function init() {
 async function getBatch() {
   await axios.get("/api/get_batch").then((res) => {
     let data = res.data;
-    //console.log(data);
+    console.log(data);
     if (data.length) {
       cascaderValue.value = [
         data[0].TERMINAL,

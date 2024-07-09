@@ -57,9 +57,11 @@
               <el-text size="large" type="primary"> 确认通知 </el-text>
             </template>
             <div class="button-box-confirm">
-              <el-button :disabled="btnDisabled" @click="confirmBatch" type="primary">确认通知</el-button>
-              <el-button :disabled="btnDisabled == false ? !btnDisabled : releaseStatus.complete
-      " @click="endBatch" type="primary">放车完成</el-button>
+              <el-button :disabled="btnDisabled || !func_no.includes('2')" @click="confirmBatch"
+                type="primary">确认通知</el-button>
+              <el-button
+                :disabled="btnDisabled == false ? !btnDisabled : releaseStatus.complete || !func_no.includes('2')"
+                @click="endBatch" type="primary">放车完成</el-button>
             </div>
           </el-card>
         </div>
@@ -106,7 +108,6 @@ let echartT2Pool = null;
 let echartDashbd = null;
 let echartOnroad = null;
 let echartTermnl = null;
-
 let audioParams = {
   terminal: "T1",
   type: "long",
@@ -114,6 +115,7 @@ let audioParams = {
 };
 let timer = null;
 
+const func_no = ref([]);
 const audio = ref();
 const btnDisabled = ref(true);
 const taxiData = reactive({
@@ -577,6 +579,7 @@ const client = new Connector(
 
 onMounted(() => {
   init();
+  func_no.value = localStorage.getItem('func_no');
 });
 
 onBeforeUnmount(() => {
@@ -609,7 +612,7 @@ watch(taxiData, (taxiData) => {
 });
 
 async function init() {
-  releaseStatus.confirm;
+  releaseStatus.confirm = false;
   await axios.get("/api/get_taxi_num").then((res) => {
     let data = res.data;
     console.log(data);

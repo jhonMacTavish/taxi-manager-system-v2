@@ -21,8 +21,7 @@
       </el-header>
       <el-container>
         <el-aside width="200px" style="border-right: solid 1 px rgba(0, 0, 0, 0.1)">
-          <el-menu v-if="user == 'admin'" :default-active="$route.path" router unique-opened="true"
-            style="height: 100%">
+          <el-menu :default-active="$route.path" router unique-opened="true" style="height: 100%">
 
             <el-menu-item index="/dashboard">
               <el-icon>
@@ -36,6 +35,12 @@
                 <Monitor />
               </el-icon>
               <span>实时监控</span>
+            </el-menu-item>
+            <el-menu-item index="/lvfuMonitor">
+              <el-icon>
+                <SetUp />
+              </el-icon>
+              <span>车辆放行</span>
             </el-menu-item>
 
             <el-sub-menu index="1">
@@ -123,14 +128,14 @@
               </el-icon>
               <span>控制名单</span>
             </el-menu-item>
-            <!-- <el-menu-item index="/parameter">
+            <el-menu-item index="/parameter">
               <el-icon>
                 <Setting />
               </el-icon>
               <span>参数设置</span>
-            </el-menu-item> -->
+            </el-menu-item>
           </el-menu>
-          <el-menu v-else-if="user == 'user'" :default-active="$route.path" router style="height: 100%">
+          <!-- <el-menu v-else-if="user == 'lvfu'" :default-active="$route.path" router style="height: 100%">
             <el-menu-item index="/lvfuMonitor">
               <el-icon>
                 <Monitor />
@@ -176,7 +181,7 @@
               </el-icon>
               <span>路径查询</span>
             </el-menu-item>
-          </el-menu>
+          </el-menu> -->
         </el-aside>
         <el-main class="main-box">
           <!-- <router-view /> -->
@@ -203,7 +208,7 @@
                 </el-row>
               </div>
               <div class="reset-button">
-                <el-button @click="showReset = !showReset">取消</el-button>
+                <el-button @click="showReset = cancel()">取消</el-button>
                 <el-button type="primary" @click="confirm()">确认</el-button>
               </div>
             </div>
@@ -224,9 +229,10 @@ import {
   Notebook,
   Histogram,
   ZoomIn,
-  MapLocation,
+  SetUp,
   Avatar,
   DocumentRemove,
+  Setting
 } from "@element-plus/icons-vue";
 import axios from "axios";
 import { ref, onMounted, reactive } from "vue";
@@ -308,6 +314,13 @@ const confirm = async () => {
     }
   });
 };
+
+const cancel = async () => {
+  showReset.value = false;
+  account.old_pwd = "";
+  account.new_pwd = "";
+  account.confirm_pwd = "";
+}
 
 </script>
 

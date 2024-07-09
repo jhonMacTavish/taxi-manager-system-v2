@@ -26,7 +26,7 @@
             <el-table v-loading="loadingStatus.dataTable" :data="tableData" stripe height="702px">
               <el-table-column width="60px">
                 <template #default="scope">
-                  <el-button size="small" type="default" @click="audit(scope.row)">审核</el-button>
+                  <el-button :disabled="!func_no.includes('5')" size="small" type="default" @click="audit(scope.row)">审核</el-button>
                 </template>
               </el-table-column>
               <el-table-column prop="carid" label="车牌" width="110px" />
@@ -108,7 +108,7 @@ import validateCarNo from "../util/tools.js";
 let timer = 0;
 const router = useRouter();
 const locale = zhCn;
-
+const func_no = ref([]);
 const imgScale = ref(1);
 const imgDeg = ref(0);
 const Img = ref();
@@ -237,13 +237,13 @@ watch(carNo, (val) => {
   carNo.value = val.toUpperCase();
 });
 
-
 onMounted(() => {
   init();
   timer = setInterval(() => {
     init();
     console.log("init");
   }, 5000);
+  func_no.value = localStorage.getItem('func_no');
 });
 
 onBeforeUnmount(() => {

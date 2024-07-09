@@ -261,6 +261,10 @@ watch(history, (history) => {
   getData();
 });
 
+watch(searchCarNo, (val) => {
+  searchCarNo.value = val.toUpperCase();
+});
+
 onMounted(() => {
   tagCard = document.getElementById("tagCard");
   init();
