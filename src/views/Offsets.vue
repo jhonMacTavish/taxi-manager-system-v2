@@ -5,20 +5,24 @@
       <el-col :span="18">
         <el-card>
           <template #header>
-            <div style="display: flex; justify-content: right">
+            <div style="text-align: right;">
               <!-- <el-switch v-model="history" active-text="已审核" inactive-text="待审核" /> -->
               <el-config-provider :locale="locale">
-                <el-input :disabled="true" v-model="carNo" placeholder="请输入车牌" class="input-with-select"
-                  style="width: 500px">
+                <!-- <el-input v-model="carNo" placeholder="请输入车牌" class="input-with-select" style="width: 500px">
                   <template #prepend>
-                    <el-date-picker :disabled="true" style="margin: 0 -20px 0 -20px; width: 360px" v-model="dateTime"
-                      type="daterange" range-separator="To" start-placeholder="开始时间" end-placeholder="结束时间"
-                      value-format="YYYY-MM-DD HH:mm:ss" />
+                    <el-date-picker style="margin: 0 -20px 0 -20px; width: 360px" v-model="dateTime"
+                      type="datetimerange" range-separator="To" start-placeholder="开始时间" end-placeholder="结束时间"
+                      value-format="YYYY-MM-DD HH:mm:ss" :disabled-date="disabledDate" :default-time="defaultTime"/>
                   </template>
-                </el-input>
-                <el-button :disabled="true" @click="getData()"><el-icon>
+</el-input> -->
+                <el-date-picker style="margin: 0; width: 360px" v-model="dateTime" type="datetimerange"
+                  range-separator="To" start-placeholder="开始时间" end-placeholder="结束时间"
+                  value-format="YYYY-MM-DD HH:mm:ss" :disabled-date="disabledDate" :default-time="defaultTime" />
+                <el-button @click="getData()">
+                  <el-icon>
                     <Search />
-                  </el-icon></el-button>
+                  </el-icon>
+                </el-button>
               </el-config-provider>
             </div>
           </template>
@@ -96,6 +100,7 @@ const Img = ref();
 const history = ref(true);
 const carNo = ref("");
 const dateTime = ref([]);
+const defaultTime = [new Date(2000, 1, 1, 0, 0, 0), new Date(2000, 1, 1, 23, 59, 59)];
 const tableData = ref([]);
 const filterTabData = ref([]);
 const total = ref(0);
@@ -121,12 +126,17 @@ const handleCurrentChange = () => {
   }
 };
 
+const disabledDate = (time) => {
+  return time.getTime() > new Date().getTime();
+};
+
 const init = async () => {
   dateTime.value[0] = dayjs()
+    .startOf('date')
     .add(-2, "day")
     .format("YYYY-MM-DD HH:mm:ss");
   dateTime.value[1] = dayjs()
-    .add(0, "day")
+    .endOf('date')
     .format("YYYY-MM-DD HH:mm:ss");
   await getData();
 };

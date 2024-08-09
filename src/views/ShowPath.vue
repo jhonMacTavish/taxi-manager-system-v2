@@ -265,10 +265,6 @@ const handleEvent = (idx) => {
   } else {
     let gpsData = positions.value.slice(offset, positions.value.length);
     gpsData.forEach((item) => {
-      // let { LAT, LNG } = item;
-      // let latlang = wgs84ToGcj02(LAT, LNG);
-      // console.log({ LAT, LNG });
-      // console.log(latlang);
       path.push(new window.TMap.LatLng(item.LAT, item.LNG));
       infowindow.open();
     });
@@ -314,13 +310,12 @@ const handleEvent = (idx) => {
 };
 
 const playCtrl = (play) => {
-  console.log(play);
   if (!play) {
-    console.log()
+    console.log("pauseMove");
     marker.pauseMove();
     iconStatus.value = false;
   } else {
-    marker.resumeMove();
+    // marker.resumeMove();
     iconStatus.value = true;
   }
 }

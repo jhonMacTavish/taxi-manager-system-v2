@@ -23,9 +23,9 @@ import ScrollBar from "@/views/ScrollBar.vue";
 import Test from "@/views/Test.vue";
 
 import Dashboard from "@/views/Dashboard.vue";
-import StatisticsByYear from "@/views/StatisticsByYear.vue"
-import StatisticsByMonth from "@/views/StatisticsByMonth.vue"
-import StatisticsByDay from "@/views/StatisticsByDay.vue"
+import StatisticsByYear from "@/views/StatisticsByYear.vue";
+import StatisticsByMonth from "@/views/StatisticsByMonth.vue";
+import StatisticsByDay from "@/views/StatisticsByDay.vue";
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -75,24 +75,35 @@ const router = createRouter({
         {
           path: "verify",
           name: "verify",
-          meta: {
-            keepAlive: true,
-          },
           component: Verify,
         },
         { path: "eligibility", name: "eligibility", component: Eligibility },
-        { path: "eligibtHistory", name: "eligibtHistory", component: EligibtHistory },
+        {
+          path: "eligibtHistory",
+          name: "eligibtHistory",
+          component: EligibtHistory,
+        },
         { path: "scrollBar", name: "scrollBar", component: ScrollBar },
         // 新增dashboard页面
         { path: "dashboard", name: "dashboard", component: Dashboard },
         // 新增按年统计
-        { path: "statisticsByYear", name: "statisticsByYear", component: StatisticsByYear },
+        {
+          path: "statisticsByYear",
+          name: "statisticsByYear",
+          component: StatisticsByYear,
+        },
         // 新增按月统计
-        { path: "statisticsByMonth", name: "statisticsByMonth", component: StatisticsByMonth },
-        // 
-        { path: "statisticsByDay", name: "statisticsByDay", component: StatisticsByDay },
-        
-
+        {
+          path: "statisticsByMonth",
+          name: "statisticsByMonth",
+          component: StatisticsByMonth,
+        },
+        //
+        {
+          path: "statisticsByDay",
+          name: "statisticsByDay",
+          component: StatisticsByDay,
+        },
       ],
     },
     {
@@ -130,7 +141,7 @@ const auditorWhitelist = ["/auditMonitor", "/audit", "/verify", "/showpath"];
 router.beforeEach((to, from, next) => {
   if (!to.meta.isPublic && !localStorage.getItem("user")) {
     next("/login");
-  } 
+  }
   // else if (
   //   localStorage.getItem("user") == "lvfu" &&
   //   !userWhitelist.includes(to.path)
@@ -144,10 +155,10 @@ router.beforeEach((to, from, next) => {
   // } else if (localStorage.getItem("user") == "admin" && to.path == "/login") {
   //   next("/dashboard");
   // }
-   else {
-    if(!from.name){
+  else {
+    if (!from.name) {
       to.fullPath = to.path;
-      to.query={};
+      to.query = {};
     }
     next();
   }

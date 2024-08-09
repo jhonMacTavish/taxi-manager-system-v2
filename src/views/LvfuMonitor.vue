@@ -102,6 +102,7 @@ import {
   computed,
   watch,
   onBeforeUnmount,
+  onActivated, onDeactivated
 } from "vue";
 let echartT1Pool = null;
 let echartT2Pool = null;

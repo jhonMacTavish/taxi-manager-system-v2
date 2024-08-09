@@ -104,13 +104,13 @@
                 </div>
               </div>
               <div style="height: 80px;position: relative;">
-                <el-button :disabled="processData[index].TERMINAL_OUT_TIME ? false : true"
+                <el-button :disabled="item.TERMINAL_OUT_TIME ? false : true"
                   style="position: absolute; bottom: 0px; left: 0" @click="gotoShowPath(1, index, 'terminal')">
                   <el-icon>
                     <OfficeBuilding />
                   </el-icon>离站路径
                 </el-button>
-                <el-button :disabled="processData[index].TIME_GET_ON && processData[index].TIME_GET_OFF ? false : true" style="position: absolute; bottom: 0px; right: 0" @click="gotoShowPath(1, index, 'metter')">
+                <el-button :disabled="item.TIME_GET_ON && item.TIME_GET_OFF ? false : true" style="position: absolute; bottom: 0px; right: 0" @click="gotoShowPath(1, index, 'metter')">
                   <el-icon>
                     <Timer />
                   </el-icon>打表路径
@@ -160,7 +160,7 @@
         </el-card>
         <el-card class="record-box" v-for="item in recordData">
           <el-text>离开<el-text style="color: #00BFFF;">&nbsp{{ item.TERMINAL
-              }}&nbsp</el-text>航站楼时间&nbsp&nbsp&nbsp&nbsp&nbsp</el-text>
+              }}&nbsp</el-text>航站楼时间&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</el-text>
           <el-text>{{ item.TERMINAL_OUT_TIME }}</el-text>
           <el-text :type="`${item.PD == 'system' ? 'primary' : 'warning'}`" class="tag">{{ item.PD == "system" ? "系统"
         :
@@ -271,7 +271,7 @@
 
 <script setup>
 import axios from "axios";
-import { ref, reactive, watch, onActivated, onDeactivated } from "vue";
+import { ref, reactive, watch, onMounted, onUnmounted } from "vue";
 import dayjs from "dayjs";
 
 import { OfficeBuilding, Timer, MapLocation } from "@element-plus/icons-vue";
@@ -634,7 +634,7 @@ const handleBind = (row) => {
   buffer[Index].METER_ID = ID;
 };
 
-onActivated(async () => {
+onMounted(async () => {
   let params = route.currentRoute._value.query;
 
   if (route.options.history.state.back == "/auditHistory") {
@@ -683,13 +683,14 @@ onActivated(async () => {
   func_no.value = localStorage.getItem('func_no');
 });
 
-onDeactivated(() => {
-  judge_id.value = '';
-  // carNo.value = '';
+onUnmounted(() => {
+  // judge_id.value = '';
+  // carNo.value = '川A';
   // dateTime.value = ['', ''];
-  // processData.value.length = 0;
+  // processData.value = [];
+  // console.log(processData.value);
   // tableData.value.length = 0;
-  flag.value = false;
+  // flag.value = false;
 });
 </script>
 

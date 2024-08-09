@@ -3,9 +3,12 @@
     <el-container style="height: 100%">
       <el-header>
         <div class="headerLogo"></div>
-        <el-icon class="logout-wrap" size="24" @click="showLogout = !showLogout">
-          <Avatar />
-        </el-icon>
+        <div class="logout-wrap"  @click="showLogout = !showLogout">
+          <el-icon style="position: relative; top: 3px;" size="24">
+            <Avatar />
+          </el-icon>
+          <text style="font-size: 20px;"> {{ username }}</text>
+        </div>
         <div :style="`opacity: ${showLogout ? '1' : '0'}; z-index: ${showLogout ? '9' : '-1'}`" class="button-box"
           @mouseleave="mouseLeave()" @mouseenter="mouseEnter()">
           <el-text class="logoutBtn" @click="logout()">注销</el-text>
@@ -184,13 +187,13 @@
           </el-menu> -->
         </el-aside>
         <el-main class="main-box">
-          <!-- <router-view /> -->
-          <router-view v-slot="{ Component }">
+          <router-view />
+          <!-- <router-view v-slot="{ Component }">
             <keep-alive>
               <component :is="Component" v-if="$route.meta.keepAlive" />
             </keep-alive>
             <component :is="Component" v-if="!$route.meta.keepAlive" />
-          </router-view>
+          </router-view> -->
           <div v-if="showReset" class="reset-wrap">
             <div class="reset-box">
               <div class="reset-content">
@@ -208,7 +211,7 @@
                 </el-row>
               </div>
               <div class="reset-button">
-                <el-button @click="showReset = cancel()">取消</el-button>
+                <el-button @click="cancel()">取消</el-button>
                 <el-button type="primary" @click="confirm()">确认</el-button>
               </div>
             </div>
@@ -236,7 +239,9 @@ import {
 } from "@element-plus/icons-vue";
 import axios from "axios";
 import { ref, onMounted, reactive } from "vue";
-const user = ref("");
+
+
+const username = ref("");
 const showLogout = ref(false);
 const showReset = ref(false);
 const account = reactive({
@@ -248,7 +253,7 @@ const account = reactive({
 let timer = null;
 
 onMounted(() => {
-  user.value = localStorage.getItem("user");
+  username.value = localStorage.getItem("user");
 });
 
 const mouseLeave = () => {
@@ -320,6 +325,7 @@ const cancel = async () => {
   account.old_pwd = "";
   account.new_pwd = "";
   account.confirm_pwd = "";
+  // console.log
 }
 
 </script>
@@ -358,7 +364,7 @@ const cancel = async () => {
   .logout-wrap {
     position: absolute;
     margin-right: 20px;
-    top: 18px;
+    top: 16px;
     right: 0px;
   }
 
@@ -378,7 +384,7 @@ const cancel = async () => {
     flex-direction: column;
     justify-content: space-around;
     top: 50px;
-    right: 20px;
+    right: 50px;
     z-index: 9;
     transition: all 0.3s ease-out;
 
