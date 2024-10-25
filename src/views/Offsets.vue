@@ -15,10 +15,10 @@
                       value-format="YYYY-MM-DD HH:mm:ss" :disabled-date="disabledDate" :default-time="defaultTime"/>
                   </template>
 </el-input> -->
-                <el-date-picker style="margin: 0; width: 360px" v-model="dateTime" type="datetimerange"
+                <el-date-picker :disabled="true" style="margin: 0; width: 360px" v-model="dateTime" type="datetimerange"
                   range-separator="To" start-placeholder="开始时间" end-placeholder="结束时间"
                   value-format="YYYY-MM-DD HH:mm:ss" :disabled-date="disabledDate" :default-time="defaultTime" />
-                <el-button @click="getData()">
+                <el-button :disabled="true" @click="getData()">
                   <el-icon>
                     <Search />
                   </el-icon>

@@ -34,22 +34,22 @@
               </el-col>
               <el-col :span="18" class="icon-box">
                 <div class="icon-item" v-loading="devices.T1.entry.tableData.length &&
-      !devices.T1.entry.existErr
-      ">
+                  !devices.T1.entry.existErr
+                  ">
                   <el-popover placement="top-start" :width="300" trigger="hover"
                     :disabled="!devices.T1.entry.tableData.length">
                     <template #reference>
                       <div class="item-box">
                         <el-icon size="34" :color="!devices.T1.entry.tableData.length
-      ? '#33CC99'
-      : 'red'
-      ">
+                          ? '#33CC99'
+                          : 'red'
+                          ">
                           <Cpu />
                         </el-icon>
                         <el-text :style="`color: ${!devices.T1.entry.tableData.length
-      ? '#33CC99'
-      : 'red'
-      }`">入口</el-text>
+                          ? '#33CC99'
+                          : 'red'
+                          }`">入口</el-text>
                       </div>
                     </template>
                     <el-table :data="devices.T1.entry.tableData">
@@ -59,22 +59,22 @@
                   </el-popover>
                 </div>
                 <div class="icon-item" v-loading="devices.T1.exit.tableData.length &&
-      !devices.T1.exit.existErr
-      ">
+                  !devices.T1.exit.existErr
+                  ">
                   <el-popover placement="top-start" :width="300" trigger="hover"
                     :disabled="!devices.T1.exit.tableData.length">
                     <template #reference>
                       <div class="item-box">
                         <el-icon size="34" :color="!devices.T1.exit.tableData.length
-      ? '#33CC99'
-      : 'red'
-      ">
+                          ? '#33CC99'
+                          : 'red'
+                          ">
                           <Cpu />
                         </el-icon>
                         <el-text :style="`color: ${!devices.T1.exit.tableData.length
-      ? '#33CC99'
-      : 'red'
-      }`">出口</el-text>
+                          ? '#33CC99'
+                          : 'red'
+                          }`">出口</el-text>
                       </div>
                     </template>
                     <el-table :data="devices.T1.exit.tableData">
@@ -84,22 +84,22 @@
                   </el-popover>
                 </div>
                 <div class="icon-item" v-loading="devices.T1.screen.tableData.length &&
-      !devices.T1.screen.existErr
-      ">
+                  !devices.T1.screen.existErr
+                  ">
                   <el-popover placement="top-start" :width="300" trigger="hover"
                     :disabled="!devices.T1.screen.tableData.length">
                     <template #reference>
                       <div class="item-box">
                         <el-icon size="34" :color="!devices.T1.screen.tableData.length
-      ? '#33CC99'
-      : 'red'
-      ">
+                          ? '#33CC99'
+                          : 'red'
+                          ">
                           <Cpu />
                         </el-icon>
                         <el-text :style="`color: ${!devices.T1.screen.tableData.length
-      ? '#33CC99'
-      : 'red'
-      }`">屏幕</el-text>
+                          ? '#33CC99'
+                          : 'red'
+                          }`">屏幕</el-text>
                       </div>
                     </template>
                     <el-table :data="devices.T1.screen.tableData">
@@ -116,22 +116,22 @@
               </el-col>
               <el-col :span="18" class="icon-box">
                 <div class="icon-item" v-loading="devices.T2.entry.tableData.length &&
-      !devices.T2.entry.existErr
-      ">
+                  !devices.T2.entry.existErr
+                  ">
                   <el-popover placement="top-start" :width="300" trigger="hover"
                     :disabled="!devices.T2.entry.tableData.length">
                     <template #reference>
                       <div class="item-box">
                         <el-icon size="34" :color="!devices.T2.entry.tableData.length
-      ? '#33CC99'
-      : 'red'
-      ">
+                          ? '#33CC99'
+                          : 'red'
+                          ">
                           <Cpu />
                         </el-icon>
                         <el-text :style="`color: ${!devices.T2.entry.tableData.length
-      ? '#33CC99'
-      : 'red'
-      }`">入口</el-text>
+                          ? '#33CC99'
+                          : 'red'
+                          }`">入口</el-text>
                       </div>
                     </template>
                     <el-table :data="devices.T2.entry.tableData">
@@ -141,22 +141,22 @@
                   </el-popover>
                 </div>
                 <div class="icon-item" v-loading="devices.T2.exit.tableData.length &&
-      !devices.T2.exit.existErr
-      ">
+                  !devices.T2.exit.existErr
+                  ">
                   <el-popover placement="top-start" :width="300" trigger="hover"
                     :disabled="!devices.T2.exit.tableData.length">
                     <template #reference>
                       <div class="item-box">
                         <el-icon size="34" :color="!devices.T2.exit.tableData.length
-      ? '#33CC99'
-      : 'red'
-      ">
+                          ? '#33CC99'
+                          : 'red'
+                          ">
                           <Cpu />
                         </el-icon>
                         <el-text :style="`color: ${!devices.T2.exit.tableData.length
-      ? '#33CC99'
-      : 'red'
-      }`">出口</el-text>
+                          ? '#33CC99'
+                          : 'red'
+                          }`">出口</el-text>
                       </div>
                     </template>
                     <el-table :data="devices.T2.exit.tableData">
@@ -166,22 +166,22 @@
                   </el-popover>
                 </div>
                 <div class="icon-item" v-loading="devices.T2.screen.tableData.length &&
-      !devices.T2.screen.existErr
-      ">
+                  !devices.T2.screen.existErr
+                  ">
                   <el-popover placement="top-start" :width="300" trigger="hover"
                     :disabled="!devices.T2.screen.tableData.length">
                     <template #reference>
                       <div class="item-box">
                         <el-icon size="34" :color="!devices.T2.screen.tableData.length
-      ? '#33CC99'
-      : 'red'
-      ">
+                          ? '#33CC99'
+                          : 'red'
+                          ">
                           <Cpu />
                         </el-icon>
                         <el-text :style="`color: ${!devices.T2.screen.tableData.length
-      ? '#33CC99'
-      : 'red'
-      }`">屏幕</el-text>
+                          ? '#33CC99'
+                          : 'red'
+                          }`">屏幕</el-text>
                       </div>
                     </template>
                     <el-table :data="devices.T2.screen.tableData">
@@ -198,22 +198,22 @@
               </el-col>
               <el-col :span="18" class="icon-box">
                 <div class="icon-item" v-loading="devices.pool.entry.tableData.length &&
-      !devices.pool.entry.existErr
-      ">
+                  !devices.pool.entry.existErr
+                  ">
                   <el-popover placement="top-start" :width="300" trigger="hover"
                     :disabled="!devices.pool.entry.tableData.length">
                     <template #reference>
                       <div class="item-box">
                         <el-icon size="34" :color="!devices.pool.entry.tableData.length
-      ? '#33CC99'
-      : 'red'
-      ">
+                          ? '#33CC99'
+                          : 'red'
+                          ">
                           <Cpu />
                         </el-icon>
                         <el-text :style="`color: ${!devices.pool.entry.tableData.length
-      ? '#33CC99'
-      : 'red'
-      }`">入口</el-text>
+                          ? '#33CC99'
+                          : 'red'
+                          }`">入口</el-text>
                       </div>
                     </template>
                     <el-table :data="devices.pool.entry.tableData">
@@ -223,22 +223,22 @@
                   </el-popover>
                 </div>
                 <div class="icon-item" v-loading="devices.pool.exit.tableData.length &&
-      !devices.pool.exit.existErr
-      ">
+                  !devices.pool.exit.existErr
+                  ">
                   <el-popover placement="top-start" :width="300" trigger="hover"
                     :disabled="!devices.pool.exit.tableData.length">
                     <template #reference>
                       <div class="item-box">
                         <el-icon size="34" :color="!devices.pool.exit.tableData.length
-      ? '#33CC99'
-      : 'red'
-      ">
+                          ? '#33CC99'
+                          : 'red'
+                          ">
                           <Cpu />
                         </el-icon>
                         <el-text :style="`color: ${!devices.pool.exit.tableData.length
-      ? '#33CC99'
-      : 'red'
-      }`">出口</el-text>
+                          ? '#33CC99'
+                          : 'red'
+                          }`">出口</el-text>
                       </div>
                     </template>
                     <el-table :data="devices.pool.exit.tableData">
@@ -248,22 +248,22 @@
                   </el-popover>
                 </div>
                 <div class="icon-item" v-loading="devices.pool.screen.tableData.length &&
-      !devices.pool.screen.existErr
-      ">
+                  !devices.pool.screen.existErr
+                  ">
                   <el-popover placement="top-start" :width="300" trigger="hover"
                     :disabled="!devices.pool.screen.tableData.length">
                     <template #reference>
                       <div class="item-box">
                         <el-icon size="34" :color="!devices.pool.screen.tableData.length
-      ? '#33CC99'
-      : 'red'
-      ">
+                          ? '#33CC99'
+                          : 'red'
+                          ">
                           <Cpu />
                         </el-icon>
                         <el-text :style="`color: ${!devices.pool.screen.tableData.length
-      ? '#33CC99'
-      : 'red'
-      }`">屏幕</el-text>
+                          ? '#33CC99'
+                          : 'red'
+                          }`">屏幕</el-text>
                       </div>
                     </template>
                     <el-table :data="devices.pool.screen.tableData">
@@ -283,12 +283,18 @@
         <div class="info-box">
           <el-card>
             <template #header>
-              <el-text class="mx-1" type="primary" size="large">补偿授权</el-text>
+              <div style="width: 100%; display: flex; justify-content: space-between;">
+                <el-text class="mx-1" type="primary" size="large">补偿授权</el-text>
+                <el-switch :disabled="false || !func_no.includes('8')" v-model="terminal" class="ml-2" inline-prompt
+                  active-text="&nbsp;T1&nbsp;" inactive-text="&nbsp;T2&nbsp;"
+                  style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949" />
+              </div>
             </template>
             <div class="input-box">
-              <el-input :disabled="true" v-model="carNo" placeholder="请输入车牌" maxlength="8" />
-              <!-- <el-button class="input-button" @click="authorize" :disabled="authDisabled">授权</el-button> -->
-              <el-button class="input-button" @click="authorize" :disabled="true">授权</el-button>
+              <el-input :disabled="false || !func_no.includes('8')" v-model="carNo" placeholder="请输入车牌" maxlength="8" />
+              <!-- <el-button class="input-button" @click="authorizeClick" :disabled="authDisabled">授权</el-button> -->
+              <el-button class="input-button" @click="authorizeClick"
+                :disabled="false || !func_no.includes('8')">授权</el-button>
             </div>
           </el-card>
           <el-card>
@@ -296,8 +302,8 @@
               <el-text class="mx-1" type="primary" size="large">放行操作</el-text>
             </template>
             <div class="cascader-box">
-              <el-cascader :disabled="false || !func_no.includes('1')" v-model="cascaderValue" :options="optionsCascader" popper-class="cascader-style"
-                @change="handleChange" />
+              <el-cascader :disabled="false || !func_no.includes('1')" v-model="cascaderValue" :options="optionsCascader"
+                popper-class="cascader-style" @change="handleChange" />
             </div>
           </el-card>
           <el-card>
@@ -313,8 +319,8 @@
                   <el-text>{{ releaseStatus.terminal }}</el-text>
                   <el-text type="primary">
                     {{
-      releaseStatus.type == "long" ? "长途" : "短途"
-    }}</el-text>
+                      releaseStatus.type == "long" ? "长途" : "短途"
+                    }}</el-text>
                   <el-text> 放车 </el-text>
                   <el-text type="success">{{ releaseStatus.total }}</el-text>
                   <el-text> 辆</el-text>
@@ -329,8 +335,8 @@
                 <h4>
                   <el-text>开始时间：</el-text>
                   <el-text type="warning">{{
-      releaseStatus.startTime
-    }}</el-text>
+                    releaseStatus.startTime
+                  }}</el-text>
                 </h4>
               </div>
             </div>
@@ -352,8 +358,8 @@
             <div v-else class="confirm-box">
               <el-tag type="warning" size="large">确认时间</el-tag>
               <el-tag type="success" size="large">{{
-      releaseStatus.confirmTime
-    }}</el-tag>
+                releaseStatus.confirmTime
+              }}</el-tag>
             </div>
           </el-card>
         </div>
@@ -372,27 +378,27 @@
               <el-col :span="4">
                 <div class="button-box">
                   <el-button :disabled="!func_no.includes('3')" @click="setDoorOnce(1)" :style="`background-color: ${doorStatus.T1Pd1 ? 'orange' : ''
-      }`">
+                    }`">
                     放车
                   </el-button>
                   <el-button :disabled="!func_no.includes('3')" @click="setDoorOnce(2)" :style="`background-color: ${doorStatus.T1Long1 ? 'orange' : ''
-      }`">
+                    }`">
                     放车
                   </el-button>
                   <el-button :disabled="!func_no.includes('3')" @click="setDoorOnce(3)" :style="`background-color: ${doorStatus.T1Long2 ? 'orange' : ''
-      }`">
+                    }`">
                     放车
                   </el-button>
                   <el-button :disabled="!func_no.includes('3')" @click="setDoorOnce(4)" :style="`background-color: ${doorStatus.T2Long1 ? 'orange' : ''
-      }`">
+                    }`">
                     放车
                   </el-button>
                   <el-button :disabled="!func_no.includes('3')" @click="setDoorOnce(5)" :style="`background-color: ${doorStatus.T2Long2 ? 'orange' : ''
-      }`">
+                    }`">
                     放车
                   </el-button>
                   <el-button :disabled="!func_no.includes('3')" @click="setDoorOnce(6)" :style="`background-color: ${doorStatus.T2Pd1 ? 'orange' : ''
-      }`">
+                    }`">
                     放车
                   </el-button>
                 </div>
@@ -407,11 +413,26 @@
     </el-row>
   </div>
   <el-dialog v-model="dialogVisible" title="放车确认" width="500" center :show-close="false">
-    <span>{{ cascaderValue[0] }} {{ cascaderValue[1] == "long" ? "长途" : cascaderValue[1] }} <el-text type="warning">{{ cascaderValue[2]}}</el-text> 辆</span>
+    <span>{{ cascaderValue[0] }} {{ cascaderValue[1] == "long" ? "长途" : cascaderValue[1] }} <el-text type="warning">{{
+      cascaderValue[2] }}</el-text> 辆</span>
     <template #footer>
       <div class="dialog-footer">
         <el-button @click="cancel()">取消</el-button>
         <el-button type="primary" @click="confirm()">
+          确认
+        </el-button>
+      </div>
+    </template>
+  </el-dialog>
+  <el-dialog v-model="authorizeVisible" title="授权确认" width="500" center :show-close="false">
+    <div style="font-size: 16px; margin: 20px 0">授权 <el-text type="warning">{{ carNo }}</el-text> 补短资格</div>
+    <div>
+      <el-input v-model="authorizeNote" :rows="6" type="textarea" placeholder="请输入授权原因" />
+    </div>
+    <template #footer>
+      <div class="dialog-footer">
+        <el-button @click="authorizeVisible = false;">取消</el-button>
+        <el-button type="primary" @click="authorizeConfirm()">
           确认
         </el-button>
       </div>
@@ -497,7 +518,8 @@ const taxiDataComputed = computed(() => {
 });
 
 const auto = ref(true);
-const carNo = ref("");
+const carNo = ref("川A");
+const terminal = ref(true);
 
 const containerPoolT1 = ref();
 const containerPoolT2 = ref();
@@ -1056,6 +1078,10 @@ const cascaderValue = ref(["x"]);
 
 const dialogVisible = ref(false);
 
+const authorizeVisible = ref(false);
+
+const authorizeNote = ref("");
+
 const releaseStatus = reactive({
   complete: true,
   startTime: "",
@@ -1172,6 +1198,10 @@ watch(
   { deep: true }
 );
 
+watch(carNo, (val) => {
+  carNo.value = val.toUpperCase();
+});
+
 onMounted(() => {
   init();
   func_no.value = localStorage.getItem('func_no');
@@ -1184,7 +1214,19 @@ onBeforeUnmount(() => {
 const handleChange = async (value) => {
   if (value[0] == "x") {
     await axios.post("/api/end_batch").then((res) => {
-      //console.log(res);
+      if (res.data = "success") {
+        ElMessage({
+          message: "放行操作成功",
+          type: "success",
+        });
+      } else {
+        ElMessage({
+          message: "放行操作失败",
+          type: "warning",
+        });
+      }
+      console.log(res);
+
     });
   } else {
     dialogVisible.value = true;
@@ -1198,6 +1240,18 @@ const confirm = async () => {
     num: Number(cascaderValue.value[2]),
   };
   await axios.post("/api/start_batch", params).then((res) => {
+    console.log(res);
+    if (res.data = "success") {
+      ElMessage({
+        message: "放行操作成功",
+        type: "success",
+      });
+    } else {
+      ElMessage({
+        message: "放行操作失败",
+        type: "warning",
+      });
+    }
     dialogVisible.value = false;
   });
 }
@@ -1207,25 +1261,42 @@ const cancel = async (value) => {
   getBatch();
 }
 
-const authorize = async () => {
+const authorizeClick = async () => {
   if (!validateCarNo(carNo.value)) {
     return;
   } else {
-    let params = {
-      carid: carNo.value,
-      user: localStorage.getItem("user"),
-    };
     authDisabled.value = true;
-    await axios.post("/api/set_user_pd", params).then((res) => {
-      //console.log(res.data);
+    authorizeVisible.value = !authorizeVisible.value;
+  }
+};
+
+const authorizeConfirm = async () => {
+  console.log()
+  let params = {
+    car_id: carNo.value,
+    pd: localStorage.getItem("user"),
+    terminal: terminal.value ? "T1" : "T2",
+    note: authorizeNote.value
+  };
+  console.log(params);
+  await axios.post("/api/set_carid_pd", params).then((res) => {
+    if (res.data.obj == "success") {
+      console.log(res.data);
       ElMessage({
         message: "授权成功",
         type: "success",
       });
-      carNo.value = "";
-      authDisabled.value = false;
-    });
-  }
+      carNo.value = "川A";
+      authorizeNote.value = "";
+    } else {
+      ElMessage({
+        message: "授权失败",
+        type: "error",
+      });
+    }
+    authDisabled.value = false;
+    authorizeVisible.value = false;
+  });
 };
 
 const setDoorOnce = async (number) => {
@@ -1809,7 +1880,7 @@ function switchData(type, mark, data) {
           }
 
           .el-button {
-            width: 60px;
+            width: 68px;
             margin: 14px 0;
           }
         }

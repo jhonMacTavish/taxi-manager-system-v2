@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <el-row class="row-box"gutter="20">
+    <el-row class="row-box" gutter="20">
       <el-col :span="12">
         <el-card>
           <el-text type="info" size="large">

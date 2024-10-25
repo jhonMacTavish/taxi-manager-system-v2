@@ -5,8 +5,7 @@
         <el-table-column prop="NOTE" label="参数" width="380" />
         <el-table-column prop="VALUE" label="有效期">
           <template #default="scope">
-            <el-input class="input" v-model="inputValue[scope.$index]" :disabled="!scope.row.isEdit"
-              oninput="value=value.replace(/[^\d]/g,'')" />
+            <el-input type="number" class="input" v-model="inputValue[scope.$index]" :disabled="!scope.row.isEdit" />
           </template>
         </el-table-column>
         <el-table-column label="">
@@ -57,7 +56,7 @@ const submit = async (index, row) => {
   console.log(inputValue.value[index]);
   if (!inputValue.value[index]) {
     ElMessage({
-      message: "请输入时间参数",
+      message: "请输入有效参数",
       type: "warning",
     });
     return;
@@ -68,8 +67,16 @@ const submit = async (index, row) => {
     };
     await axios.post("/api/set_config", params).then((res) => {
       if (res.data == "success") {
+        ElMessage({
+          message: "参数修改成功",
+          type: "success",
+        });
         init();
       } else {
+        ElMessage({
+          message: "参数修改失败",
+          type: "warning",
+        });
         return;
       }
     });

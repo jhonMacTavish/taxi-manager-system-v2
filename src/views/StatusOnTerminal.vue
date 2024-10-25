@@ -305,6 +305,7 @@ onMounted(() => {
     init();
   }, 10000);
   func_no.value = localStorage.getItem('func_no');
+  console.log(func_no.value);
 });
 
 onBeforeUnmount(() => {

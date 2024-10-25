@@ -1,0 +1,99 @@
+[
+    {
+        "identifyError": {
+            "id": 1,
+            "resultCarId": "川AD14011",
+            "terminal": "T2",
+            "terminalOutDoorId": "88cb6913-b47863f4",
+            "terminalOutTime": "2024-09-24 16:30:13"
+        },
+        "carProcessList": [
+            {
+                "id": 179748,
+                "carId": "川ADT4011",
+                "poolInDoorId": "d9dd7f55-dfbf8e17",
+                "poolInTime": "2024-09-24 16:24:17",
+                "terminal": "T1",
+                "poolOutBatchId": 8641,
+                "poolOutDoorId": "ca068197-cc10e8ec",
+                "poolOutTime": "2024-09-24 16:24:19",
+                "type": "long",
+                "poolOutBatchOrder": 24,
+                "pdInTime": null,
+                "terminalInDoorId": "879cee8f-0353ac30",
+                "terminalInCarId": null,
+                "terminalInTime": "2024-09-24 16:24:30",
+                "line": 1,
+                "once": null,
+                "terminalOutDoorId": null,
+                "terminalOutTime": null,
+                "terminalOutByCarId": null,
+                "giveUpTime": null,
+                "giveUpBy": null,
+                "createTime": "2024-09-24 16:24:17",
+                "updateTime": "2024-09-24 16:24:30"
+            },
+            {
+                "id": 179749,
+                "carId": "川ADT40T1",
+                "poolInDoorId": "d9dd7f55-dfbf8e17",
+                "poolInTime": "2024-09-24 16:24:17",
+                "terminal": "T1",
+                "poolOutBatchId": 8641,
+                "poolOutDoorId": "ca068197-cc10e8ec",
+                "poolOutTime": "2024-09-24 16:24:19",
+                "type": "long",
+                "poolOutBatchOrder": 24,
+                "pdInTime": null,
+                "terminalInDoorId": "879cee8f-0353ac30",
+                "terminalInCarId": null,
+                "terminalInTime": "2024-09-24 16:24:30",
+                "line": 1,
+                "once": null,
+                "terminalOutDoorId": null,
+                "terminalOutTime": null,
+                "terminalOutByCarId": null,
+                "giveUpTime": null,
+                "giveUpBy": null,
+                "createTime": "2024-09-24 16:24:17",
+                "updateTime": "2024-09-24 16:24:30"
+            }
+        ]
+    },
+    {
+        "identifyError": {
+            "id": 2,
+            "resultCarId": "川ADT8050",
+            "terminal": "T2",
+            "terminalOutDoorId": "c8cfe48a-7ecd6a6a",
+            "terminalOutTime": "2024-09-24 16:42:40"
+        },
+        "carProcessList": [
+            {
+                "id": 179744,
+                "carId": "川ADT8059",
+                "poolInDoorId": "ad9ca2ab-bf047ce6",
+                "poolInTime": "2024-09-24 16:20:31",
+                "terminal": "T2",
+                "poolOutBatchId": 8661,
+                "poolOutDoorId": "b2d36610-9e5380f7",
+                "poolOutTime": "2024-09-24 16:42:28",
+                "type": "long",
+                "poolOutBatchOrder": 2,
+                "pdInTime": null,
+                "terminalInDoorId": "b8ffd788-8dd7b84a",
+                "terminalInCarId": null,
+                "terminalInTime": "2024-09-24 16:42:30",
+                "line": 1,
+                "once": null,
+                "terminalOutDoorId": null,
+                "terminalOutTime": null,
+                "terminalOutByCarId": null,
+                "giveUpTime": null,
+                "giveUpBy": null,
+                "createTime": "2024-09-24 16:20:31",
+                "updateTime": "2024-09-24 16:42:30"
+            }
+        ]
+    }
+]

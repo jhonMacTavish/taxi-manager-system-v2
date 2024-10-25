@@ -30,8 +30,8 @@
                   <el-text>{{ releaseStatus.terminal }}</el-text>
                   <el-text type="primary">
                     {{
-      releaseStatus.type == "long" ? "长途" : "短途"
-    }}</el-text>
+                      releaseStatus.type == "long" ? "长途" : "短途"
+                    }}</el-text>
                   <el-text> 放车 </el-text>
                   <el-text type="success">{{ releaseStatus.total }}</el-text>
                   <el-text> 辆</el-text>
@@ -46,8 +46,8 @@
                 <h4>
                   <el-text>开始时间：</el-text>
                   <el-text type="warning">{{
-      releaseStatus.startTime
-    }}</el-text>
+                    releaseStatus.startTime
+                  }}</el-text>
                 </h4>
               </div>
             </div>
@@ -667,19 +667,39 @@ async function getBatch() {
 const confirmBatch = async () => {
   await axios
     .post("/api/confirm", {
-      user: "xxx",
+      user: localStorage.getItem("user"),
     })
     .then((res) => {
       console.log(res.data);
-      btnDisabled.value = true;
+      if (res.data = "success") {
+        ElMessage({
+          message: "确认放车通知",
+          type: "success",
+        });
+        btnDisabled.value = true;
+      } else {
+        ElMessage({
+          message: "确认通知失败",
+          type: "warning",
+        });
+      }
     });
 };
 
 const endBatch = async () => {
   await axios.post("/api/end_batch").then((res) => {
-    if (res.data == "success") {
+    if (res.data = "success") {
+      ElMessage({
+        message: "停止放车成功",
+        type: "success",
+      });
       releaseStatus.complete = true;
       playAudio();
+    } else {
+      ElMessage({
+        message: "停止放车失败",
+        type: "warning",
+      });
     }
   });
 };

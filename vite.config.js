@@ -28,10 +28,19 @@ export default defineConfig({
     open: true,
     base: './',
     proxy: {
+      '/door': {
+        target: 'http://10.35.240.225', //测试
+        // target: 'http://',  //正式
+        secure: false,
+        changeOrigin: true,
+        pathRewrite: {
+          '^/door': ''
+        }
+      },
       // 动态数据，统计数据api
       '/api/v1': {
-        // target: 'http://10.35.240.225:8081', //测试
-        target:'http://10.35.240.211:8081', //生产
+        target: 'http://10.35.240.225:8081', //测试
+        // target:'http://10.35.240.211:8081', //生产
         secure: false,
         changeOrigin: true,
         pathRewrite: {
@@ -39,8 +48,8 @@ export default defineConfig({
         }
       },
       '/api': {
-        // target: 'http://10.35.240.219', //测试
-        target: 'http://10.35.240.215',  //正式
+        target: 'http://10.35.240.219', //测试
+        // target: 'http://10.35.240.215',  //正式
         secure: false,
         changeOrigin: true,
         pathRewrite: {

@@ -218,13 +218,14 @@ const terminal_1_2_with1h = ref(0)
 const terminal_2_2_with1h = ref(0)
 const terminal_short_2_with1h = ref(0)
 
+const func_no = ref([]);
 
 
 // 通过api请求出租车数据
 const getTaxiNumber = async () => {
     // 老的api地址 /api/get_taxi_num
     await axios.get("/api/v1/realtime-data/overview").then((res) => {
-        console.log(res, "出租车数据")
+        // console.log(res, "出租车数据")
         if (res.data.status === 200) {
             let data = res.data.data;
             data.forEach((item) => {
@@ -324,9 +325,10 @@ onMounted(async () => {
         // 先去获取流程表中的详细数据
         getDetailTable();
         // 再根据当前存储的筛选条件，加载筛选表格的数据
-        console.log("当前点击的筛选条件", filterStr.value)
+        // console.log("当前点击的筛选条件", filterStr.value)
         loadTableData2(filterStr.value);
     }, 5000); // 每 5 秒执行一次
+    func_no.value = localStorage.getItem('func_no');
 })
 
 onUnmounted(() => {
@@ -364,7 +366,7 @@ const filterName = ref('')
 const getDetailTable = async () => {
     // 老api /api/process_list
     await axios.get("/api/v1/realtime-data/detail").then((res) => {
-        console.log(res, "process数据")
+        // console.log(res, "process数据")
         if (res.data.status === 200) {
             let data = res.data.data;
             tableData.value = data;
@@ -524,7 +526,10 @@ const menuConfig = reactive({
 })
 // 拼显界面右键菜单函数
 const contextMenuClickEvent = ({ menu, row, column }) => {
-    if (menu.code === 'giveup') {
+    if(!func_no.value.includes('4')){
+        return
+    }
+    else if (menu.code === 'giveup') {
         giveUpOption(row)
     }
 }

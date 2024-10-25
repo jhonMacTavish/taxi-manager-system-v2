@@ -3,7 +3,7 @@
     <el-container style="height: 100%">
       <el-header>
         <div class="headerLogo"></div>
-        <div class="logout-wrap"  @click="showLogout = !showLogout">
+        <div class="logout-wrap" @click="showLogout = !showLogout">
           <el-icon style="position: relative; top: 3px;" size="24">
             <Avatar />
           </el-icon>
@@ -24,7 +24,7 @@
       </el-header>
       <el-container>
         <el-aside width="200px" style="border-right: solid 1 px rgba(0, 0, 0, 0.1)">
-          <el-menu :default-active="$route.path" router unique-opened="true" style="height: 100%">
+          <el-menu :default-active="$route.path" router :unique-opened="true" style="height: 100%">
 
             <el-menu-item index="/dashboard">
               <el-icon>
@@ -105,6 +105,9 @@
                 </el-icon>
                 <span>数据统计</span>
               </template>
+              <el-menu-item index="/alerts">
+                <span>告警监视</span>
+              </el-menu-item>
               <el-menu-item index="/statistics">
                 <span>车辆统计</span>
               </el-menu-item>
@@ -138,62 +141,9 @@
               <span>参数设置</span>
             </el-menu-item>
           </el-menu>
-          <!-- <el-menu v-else-if="user == 'lvfu'" :default-active="$route.path" router style="height: 100%">
-            <el-menu-item index="/lvfuMonitor">
-              <el-icon>
-                <Monitor />
-              </el-icon>
-              <span>实时监控</span>
-            </el-menu-item>
-            <el-menu-item index="/statusOnPool">
-              <el-icon>
-                <Guide />
-              </el-icon>
-              <span>蓄车数量</span>
-            </el-menu-item>
-            <el-menu-item index="/history">
-              <el-icon>
-                <Notebook />
-              </el-icon>
-              <span>车辆历史</span>
-            </el-menu-item>
-          </el-menu>
-          <el-menu v-else :default-active="$route.path" router style="height: 100%">
-            <el-menu-item index="/dashboard">
-              <el-icon>
-                <Odometer />
-              </el-icon>
-              <span>动态数据</span>
-            </el-menu-item>
-
-            <el-menu-item index="/auditMonitor">
-              <el-icon>
-                <Monitor />
-              </el-icon>
-              <span>实时监控</span>
-            </el-menu-item>
-            <el-menu-item index="/verify">
-              <el-icon>
-                <ZoomIn />
-              </el-icon>
-              <span>申述核查</span>
-            </el-menu-item>
-            <el-menu-item index="/showpath">
-              <el-icon>
-                <MapLocation />
-              </el-icon>
-              <span>路径查询</span>
-            </el-menu-item>
-          </el-menu> -->
         </el-aside>
         <el-main class="main-box">
           <router-view />
-          <!-- <router-view v-slot="{ Component }">
-            <keep-alive>
-              <component :is="Component" v-if="$route.meta.keepAlive" />
-            </keep-alive>
-            <component :is="Component" v-if="!$route.meta.keepAlive" />
-          </router-view> -->
           <div v-if="showReset" class="reset-wrap">
             <div class="reset-box">
               <div class="reset-content">

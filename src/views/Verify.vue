@@ -28,8 +28,10 @@
               <el-button @click="getData()" :disabled="!!judge_id">查询历史数据</el-button>
             </div>
             <div class="button-wrap">
-              <el-button class="button" type="warning" plain @click="authorize" style="width: 110px"
-                :disabled="!!judge_id || !func_no.includes('5')">授权</el-button>
+              <!-- <el-button class="button" type="warning" plain @click="authorize" style="width: 110px"
+                :disabled="!!judge_id || !func_no.includes('5')">授权</el-button> -->
+                <el-button class="button" type="warning" plain @click="authorize" style="width: 110px"
+                :disabled="true">授权</el-button>
             </div>
           </div>
         </el-card>
@@ -287,6 +289,10 @@ import {
   RefreshLeft,
 } from "@element-plus/icons-vue";
 
+defineOptions({
+  name: 'Verify'
+});
+
 const route = useRouter();
 const locale = zhCn;
 
@@ -480,8 +486,8 @@ const gotoShowPath = (state, index, tag) => {
     // ];
     if (tag == 'terminal') {
       dateTime = [
-        dayjs(processData.value[0].TERMINAL_OUT_TIME).format("YYYY-MM-DD HH:mm:ss"),
-        dayjs(processData.value[0].TERMINAL_OUT_TIME).add(2, "hour").format("YYYY-MM-DD HH:mm:ss"),
+        dayjs(processData.value[index].TERMINAL_OUT_TIME).format("YYYY-MM-DD HH:mm:ss"),
+        dayjs(processData.value[index].TERMINAL_OUT_TIME).add(2, "hour").format("YYYY-MM-DD HH:mm:ss"),
       ];
     } else {
       dateTime = [
