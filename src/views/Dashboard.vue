@@ -478,24 +478,24 @@ const loadTableData2 = (str) => {
             tableName.value = 'T2蓄车场正常'
             break;
         case 't2_on_the_way':
-            filterTableData.value = tableData.value.filter(item => item.terminal === 'T2' && item.poolOutTime != null && item.terminalOutTime == null)
+            filterTableData.value = tableData.value.filter(item => item.terminal === 'T2' && item.poolOutTime != null && item.terminalInTime == null)
             tableName.value = 'T2路途'
             break;
         case 't2_terminal_1':
-            filterTableData.value = tableData.value.filter(item => item.terminal === 'T2' && item.terminalInTime != null && item.line == '1' && item.terminalOutTime == null)
+            filterTableData.value = tableData.value.filter(item => item.terminal === 'T2' && item.terminalInTime != null && item.line == '1' && item.type != 'pd'  && item.terminalOutTime == null)
             tableName.value = 'T2航站楼第一通道'
             break;
         case 't2_terminal_1_with1h':
-            filterTableData.value = tableData.value.filter(item => item.terminal === 'T1' && item.terminalInTime != null && item.line == '1' && item.type != 'pd' && item.terminalOutTime == null)
+            filterTableData.value = tableData.value.filter(item => item.terminal === 'T2'  && item.line == '1' && item.type != 'pd' && item.terminalOutTime != null)
             tableName.value = 'T2航站楼第一通道离开未超1小时'
             break;
 
         case 't2_terminal_2':
-            filterTableData.value = tableData.value.filter(item => item.terminal === 'T2' && item.terminalInTime != null && item.line == '2' && item.terminalOutTime == null)
+            filterTableData.value = tableData.value.filter(item => item.terminal === 'T2' && item.terminalInTime != null && item.line == '2' && item.type != 'pd' && item.terminalOutTime == null)
             tableName.value = 'T2航站楼第二通道'
             break;
         case 't2_terminal_2_with1h':
-            filterTableData.value = tableData.value.filter(item => item.terminal === 'T1' && item.terminalInTime != null && item.line == '2' && item.type != 'pd' && item.terminalOutTime == null)
+            filterTableData.value = tableData.value.filter(item => item.terminal === 'T2' && item.line == '2' && item.type != 'pd' && item.terminalOutTime != null)
             tableName.value = 'T2航站楼第二通道离开未超1小时'
             break;
 
@@ -504,7 +504,7 @@ const loadTableData2 = (str) => {
             tableName.value = 'T2航站楼补短通道'
             break;
         case 't2_terminal_pd1_with1h':
-            filterTableData.value = tableData.value.filter(item => item.terminal === 'T1' && item.terminalInTime != null && item.line == '1' && item.type == 'pd' && item.terminalOutTime == null)
+            filterTableData.value = tableData.value.filter(item => item.terminal === 'T2' && item.line == '1' && item.type == 'pd' && item.terminalOutTime != null)
             tableName.value = 'T2航站楼补短通道离开未超1小时'
             break;
 
