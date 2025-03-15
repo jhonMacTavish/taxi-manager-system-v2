@@ -5,16 +5,31 @@ import vue from '@vitejs/plugin-vue'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+import Icons from 'unplugin-icons/vite'
+import IconsResolver from 'unplugin-icons/resolver'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     vue(),
     AutoImport({
-      resolvers: [ElementPlusResolver()],
+      resolvers: [
+        ElementPlusResolver(),
+        IconsResolver({
+          prefix: 'Icon', // 配置图标前缀
+        }),
+      ],
     }),
     Components({
-      resolvers: [ElementPlusResolver()],
+      resolvers: [ElementPlusResolver(),
+      IconsResolver({
+        enabledCollections: ['ep'], // 只启用 'ep' 图标集
+      }),
+      ],
+    }),
+    Icons({
+      autoInstall: true, // 自动安装图标
+      compiler: 'vue3',  // 设置 Vue 3 编译器
     }),
   ],
   resolve: {

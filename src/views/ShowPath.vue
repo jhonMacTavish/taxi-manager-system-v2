@@ -3,16 +3,23 @@
     <div id="map-box" v-loading="loading">
       <div class="search-box">
         <el-config-provider :locale="locale">
-          <el-input v-model="carNo" placeholder="请输入车牌" class="input-with-select" style="max-width: 600px">
+          <el-input v-model="carNo" placeholder="请输入车牌" class="input-with-select" style="max-width: 630px">
             <template #prepend>
               <el-date-picker style="margin: 0 -20px 0 -20px; width: 360px" v-model="dateTime" type="datetimerange"
                 range-separator="至" start-placeholder="开始时间" end-placeholder="结束时间" value-format="YYYY-MM-DD HH:mm:ss"
                 :disabled-date="disabledDate" />
+              <el-button type="primary" @click="getPath(5)">
+                <el-icon style="width: 100px;">
+                  +5分钟
+                </el-icon>
+              </el-button>
             </template>
             <template #append>
-              <el-button @click="getPath"><el-icon>
+              <el-button @click="getPath(0)">
+                <el-icon>
                   <Search />
-                </el-icon></el-button>
+                </el-icon>
+              </el-button>
             </template>
           </el-input>
         </el-config-provider>
@@ -25,7 +32,7 @@
 </template>
 
 <script setup>
-import { onBeforeUnmount, onMounted, ref, watch} from "vue";
+import { onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { Search } from "@element-plus/icons-vue";
 import axios from "axios";
 // import https from "https";
@@ -33,7 +40,7 @@ import dayjs from "dayjs";
 import zhCn from "element-plus/es/locale/lang/zh-cn";
 import validateCarNo from "../util/tools.js";
 import { useRouter } from "vue-router";
-import ScrollBar from "./ScrollBar.vue";
+import ScrollBar from "./../components/ScrollBar.vue";
 
 let map = null;
 let polylineLayer = null;
@@ -337,7 +344,7 @@ const disabledDate = (time) => {
   return time.getTime() > new Date().getTime();
 };
 
-const getPath = async () => {
+const getPath = async (increment) => {
   if (
     dateTime.value ? !dateTime.value[0] || !dateTime.value[1] : !dateTime.value
   ) {
@@ -349,6 +356,12 @@ const getPath = async () => {
   } else if (!validateCarNo(carNo.value)) {
     return;
   } else {
+    if (increment) {
+      dateTime.value[1] = dayjs(dateTime.value[1]).add(5, 'minute').format('YYYY-MM-DD HH:mm:ss');
+      console.log(dateTime.value[1]);
+    } else {
+
+    }
     let params = {
       carid: carNo.value,
       starttime: dateTime.value[0],

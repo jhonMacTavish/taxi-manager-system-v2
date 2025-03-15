@@ -221,7 +221,7 @@ const init = async () => {
 
 const audit = async (row) => {
   router.push({
-    path: "/verify",
+    path: "/auditAndHistory",
     query: {
       judge_id: row.id,
       processid: row.processid

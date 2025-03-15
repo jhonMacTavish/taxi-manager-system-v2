@@ -558,7 +558,7 @@ onBeforeUnmount(() => {
 });
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .container {
   position: relative;
   width: 100%;

@@ -9,6 +9,7 @@ import StatusOnTerminal from "@/views/StatusOnTerminal.vue";
 import VisitHistory from "@/views/VisitHistory.vue";
 import Statistics from "@/views/Statistics.vue";
 import Offsets from "@/views/Offsets.vue";
+import OffsetsStatistics from "@/views/OffsetsStatistics.vue";
 import Alerts from "@/views/Alerts.vue";
 import Distance from "@/views/Distance.vue";
 import Parameter from "@/views/Parameter.vue";
@@ -18,6 +19,7 @@ import Login from "@/views/Login.vue";
 import Verify from "@/views/Verify.vue";
 import Audit from "@/views/Audit.vue";
 import AuditHistory from "@/views/AuditHistory.vue";
+import AuditAndHistory from "@/views/AuditAndHisroty.vue";
 import Eligibility from "@/views/Eligibility.vue";
 import EligibtHistory from "@/views/EligibtHistory.vue";
 import ScrollBar from "@/views/ScrollBar.vue";
@@ -66,6 +68,7 @@ const router = createRouter({
         { path: "visitHistory", name: "visitHistory", component: VisitHistory },
         { path: "statistics", name: "statistics", component: Statistics },
         { path: "offsets", name: "offsets", component: Offsets },
+        { path: "offsetsStatistics", name: "offsetsStatistics", component: OffsetsStatistics },
         { path: "alerts", name: "alerts", component: Alerts },
         { path: "distance", name: "distance", component: Distance },
         { path: "parameter", name: "parameter", component: Parameter },
@@ -73,6 +76,7 @@ const router = createRouter({
         { path: "audit", name: "audit", component: Audit },
         { path: "test", name: "test", component: Test },
         { path: "auditHistory", name: "auditHistory", component: AuditHistory },
+        { path: "auditAndHistory", name: "auditAndHistory", component: AuditAndHistory },
         { path: "blackList", name: "blackList", component: BlackList },
         {
           path: "verify",

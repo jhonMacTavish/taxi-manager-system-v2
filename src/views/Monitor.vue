@@ -425,7 +425,7 @@
     </template>
   </el-dialog>
   <el-dialog v-model="authorizeVisible" title="授权确认" width="500" center :show-close="false">
-    <div style="font-size: 16px; margin: 20px 0">授权 <el-text type="warning">{{ carNo }}</el-text> 补短资格</div>
+    <div style="font-size: 16px; margin: 20px 0">授权 <el-text type="warning">{{ carNo }}</el-text> <el-text type="danger">{{ `${terminal?'T1':'T2'}` }}</el-text> 补短资格</div>
     <div>
       <el-input v-model="authorizeNote" :rows="6" type="textarea" placeholder="请输入授权原因" />
     </div>

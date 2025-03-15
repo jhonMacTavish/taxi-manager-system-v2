@@ -64,6 +64,7 @@ import T1_voice from "../../src/assets/voice/T1.wav";
 import T2long_voice from "../../src/assets/voice/T2long.wav";
 import T2short_voice from "../../src/assets/voice/T2short.wav";
 import T1_come_soon_voice from "../../src/assets/voice/T1_come_soon.wav";
+import T2_come_soon_voice from "../../src/assets/voice/T2_come_soon.wav";
 import T2long_come_soon_voice from "../../src/assets/voice/T2long_come_soon.wav";
 import T2short_come_soon_voice from "../../src/assets/voice/T2short_come_soon.wav";
 import put_end_voice from "../../src/assets/voice/put_end.wav";
@@ -78,6 +79,7 @@ let actionVoice = {
   T2short_come_soon_voice,
   put_end_voice,
   release_complete_audio,
+  T2_come_soon_voice
 };
 
 let numVoice = [

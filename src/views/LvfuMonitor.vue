@@ -937,36 +937,7 @@ const playAudio = (params) => {
     } else if (params.terminal == "T1") {
       audioSource.value = actionVoice.T1_come_soon_voice;
     } else {
-      console.log("T2");
-      if (params.type == "long") {
-        // player = new Promise((resolve, reject) => {
-        //   timer = setTimeout(() => {
-        //     console.log("*********playAudio terminal");
-        //     audio.value && audio.value.play();
-        //   }, 100);
-        //   audio.value.onended = () => {
-        //     resolve(params.num);
-        //     reject("error");
-        //   }
-        // });
-        // player.then(value => {
-        //   audioSource.value = numVoice[value];
-        //   console.log("///////////", audioSource.value);
-        //   timer = setTimeout(() => {
-        //     console.log("*********playAudio num");
-        //     audio.value && audio.value.play();
-        //   }, 100);
-        //   audio.value.onended = () => {
-        //     audioSource.value = numVoice[0];
-        //     timer = setTimeout(() => {
-        //       audio.value && audio.value.play();
-        //     })
-        //   }
-        // })
-        audioSource.value = actionVoice.T2long_come_soon_voice;
-      } else {
-        audioSource.value = actionVoice.T2short_come_soon_voice;
-      }
+      audioSource.value = actionVoice.T2_come_soon_voice;
     }
 
     audio.value.onended = () => {

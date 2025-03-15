@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <el-row class="row-box" gutter="20">
+    <el-row class="row-box" :gutter="20">
       <el-col :span="12">
         <el-card>
           <el-text type="info" size="large">
@@ -16,29 +16,33 @@
           </el-input>
           <el-table v-loading="loadingStatus.T1Table" :data="filterTableData[0]" :stripe="false" height="780px"
             :row-class-name="tableRowClassName">
-            <el-table-column prop="CAR_ID" label="车牌号" width="130px" />
+            <el-table-column prop="CAR_ID" label="车牌号" width="120px" />
             <el-table-column sortable prop="TERMINAL_OUT_TIME" label="离开航站楼时间" width="170px" />
             <el-table-column label="授权" width="80px" filter-placement="bottom-end" :filter-method="filterPD" :filters="[
-      { text: '系统', value: 'system' },
-      { text: '人工', value: 'admin' },
-    ]">
+              { text: '系统', value: 'system' },
+              { text: '人工', value: 'admin' },
+            ]">
               <template #default="scope">
                 <el-text :type="scope.row.PD == 'system' ? 'info' : 'warning'">{{ scope.row.PD == "system" ? "系统" :
-      "人工" }}</el-text>
+                  "人工" }}</el-text>
               </template>
             </el-table-column>
             <el-table-column sortable prop="EXPIRATION_TIME" label="资格过期时间" width="170px" />
-            <el-table-column label="资格状态" filter-placement="bottom-end" :filter-method="filterStatus" :filters="[
-      { text: '未使用', value: 'unused' },
-      { text: '已使用', value: 'used' },
-      { text: '已过期', value: 'expired' },
-    ]">
+            <el-table-column label="资格状态" width="120px" filter-placement="bottom-end" :filter-method="filterStatus"
+              :filters="[
+                { text: '未使用', value: 'unused' },
+                { text: '已使用', value: 'used' },
+                { text: '已过期', value: 'expired' },
+              ]">
               <template #default="scope">
                 <el-text>{{ scope.row.STATUS == "expired" ? "已过期" : scope.row.STATUS == "used" ? "已使用" : "未使用"
-                  }}</el-text>
+                }} &nbsp;</el-text>
+                <el-button :disabled="scope.row.STATUS == 'expired' ? true : scope.row.STATUS == 'used' ? true : false"
+                  size="small" type="default" :icon="Check" circle
+                  @click="() => { verification = true; taxiObj.carId = scope.row.CAR_ID; taxiObj.terminal = scope.row.TERMINAL }"></el-button>
               </template>
             </el-table-column>
-            <el-table-column width="120px">
+            <el-table-column>
               <template #default="scope">
                 <el-button type="default" @click="detail(scope.row)">来访详情</el-button>
               </template>
@@ -64,23 +68,29 @@
             <el-table-column prop="CAR_ID" label="车牌号" width="130px" />
             <el-table-column sortable prop="TERMINAL_OUT_TIME" label="离开航站楼时间" width="170px" />
             <el-table-column label="授权" width="80px" filter-placement="bottom-end" :filter-method="filterPD" :filters="[
-      { text: '系统', value: 'system' },
-      { text: '人工', value: 'admin' },
-    ]">
+              { text: '系统', value: 'system' },
+              { text: '人工', value: 'admin' },
+            ]">
               <template #default="scope">
                 <el-text :type="scope.row.PD == 'system' ? 'info' : 'warning'">{{ scope.row.PD == "system" ? "系统" :
-      "人工" }}</el-text>
+                  "人工" }}</el-text>
               </template>
             </el-table-column>
             <el-table-column sortable prop="EXPIRATION_TIME" label="资格过期时间" width="170px" />
-            <el-table-column label="资格状态" filter-placement="bottom-end" :filter-method="filterStatus" :filters="[
-      { text: '未使用', value: 'unused' },
-      { text: '已使用', value: 'used' },
-      { text: '已过期', value: 'expired' },
-    ]">
+            <el-table-column label="资格状态" width="120px" filter-placement="bottom-end" :filter-method="filterStatus"
+              :filters="[
+                { text: '未使用', value: 'unused' },
+                { text: '已使用', value: 'used' },
+                { text: '已过期', value: 'expired' },
+              ]">
               <template #default="scope">
                 <el-text>{{ scope.row.STATUS == "expired" ? "已过期" : scope.row.STATUS == "used" ? "已使用" : "未使用"
-                  }}</el-text>
+                }} &nbsp;</el-text>
+                <el-button :disabled="scope.row.STATUS == 'expired' ? true : scope.row.STATUS == 'used' ? true : false"
+                  size="small" type="default" :icon="Check" circle
+                  @click="() => { verification = true; taxiObj.carId = scope.row.CAR_ID; taxiObj.terminal = scope.row.TERMINAL }"></el-button>
+                <!-- <el-button :disabled="scope.row.STATUS == 'expired' ? true : scope.row.STATUS == 'used' ? true : false"
+                  size="small" type="default" :icon="Check" circle @click="verify(scope.row)"></el-button> -->
               </template>
             </el-table-column>
             <el-table-column width="120px">
@@ -132,12 +142,24 @@
       </el-button>
     </div>
   </div>
+  <el-dialog v-model="verification" title="核销确认" width="500" center :show-close="false">
+    <div style="font-size: 16px; margin: 20px 0">核销 <el-text type="warning">{{ taxiObj.carId }}</el-text> <el-text
+        type="danger">{{ taxiObj.terminal }}</el-text> 补短资格</div>
+    <template #footer>
+      <div class="dialog-footer">
+        <el-button @click="verification = false;">取消</el-button>
+        <el-button type="primary" @click="verify()">
+          确认
+        </el-button>
+      </div>
+    </template>
+  </el-dialog>
 </template>
 
 <script setup>
 import axios from "axios";
 import { ref, onMounted, computed, reactive, watch, onBeforeUnmount } from "vue";
-import { Search, Close } from "@element-plus/icons-vue";
+import { Search, Close, Check } from "@element-plus/icons-vue";
 import dayjs from "dayjs";
 
 let timer = null;
@@ -180,6 +202,11 @@ let map = null;
 let polylineLayer = null;
 let marker = null;
 const loading = ref(false);
+const verification = ref(false);
+const taxiObj = reactive({
+  carId: '',
+  terminal: '',
+});
 
 const filterStatus = (value, row) => {
   return row.STATUS == value;
@@ -449,8 +476,10 @@ const tableRowClassName = (
   { row, rowIndex }
 ) => {
   if (row.STATUS === "used") {
+    console.log("used");
     return 'used-row'
   } else if (row.STATUS === "expired") {
+    console.log("used");
     return 'expired-row'
   } else {
     return ''
@@ -473,6 +502,29 @@ const detail = async (row) => {
 
   initMap();
   getPath();
+};
+
+const verify = async () => {
+  let params = {
+    carId: taxiObj.carId,
+    terminal: taxiObj.terminal
+  };
+  await axios.get("/door/usePd", { params }).then(res => {
+    console.log(res);
+    if (res.data.status == 200) {
+      ElMessage({
+        message: `${params.carId}进入排短通道成功`,
+        type: "success",
+      });
+      init();
+    } else {
+      ElMessage({
+        message: `${params.carId}进入排短通道失败`,
+        type: "warning",
+      });
+    }
+    verification.value = false;
+  });
 };
 
 async function init() {
@@ -515,7 +567,7 @@ onBeforeUnmount(() => {
 });
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .container {
   position: relative;
   width: 100%;
@@ -529,7 +581,7 @@ onBeforeUnmount(() => {
       height: 100%;
       text-align: center;
 
-      .el-text{
+      .el-text {
         font-size: 16px;
       }
 
@@ -547,14 +599,6 @@ onBeforeUnmount(() => {
         margin-top: 10px;
         position: relative;
         bottom: -3px;
-      }
-
-      .el-table .used-row {
-        --el-table-tr-bg-color: var(--el-color-success-light-9);
-      }
-
-      .el-table .expired-row {
-        --el-table-tr-bg-color: rgba(0, 0, 0, 0.1);
       }
     }
   }
@@ -647,5 +691,15 @@ onBeforeUnmount(() => {
       background-color: rgba(0, 0, 0, 0.2);
     }
   }
+}
+</style>
+
+<style>
+.el-table .used-row {
+  --el-table-tr-bg-color: var(--el-color-success-light-9);
+}
+
+.el-table .expired-row {
+  --el-table-tr-bg-color: rgba(0, 0, 0, 0.1);
 }
 </style>

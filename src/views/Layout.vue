@@ -81,6 +81,9 @@
               <el-menu-item index="/verify">
                 <span>申诉核查</span>
               </el-menu-item>
+              <!-- <el-menu-item index="/auditAndHistory">
+                <span>审核&回查</span>
+              </el-menu-item> -->
               <el-menu-item index="/showpath">
                 <span>路径查询</span>
               </el-menu-item>
@@ -112,7 +115,10 @@
                 <span>车辆统计</span>
               </el-menu-item>
               <el-menu-item index="/offsets">
-                <span>补偿统计</span>
+                <span>补偿次数统计</span>
+              </el-menu-item>
+              <el-menu-item index="/offsetsStatistics">
+                <span>补偿详情统计</span>
               </el-menu-item>
               <el-menu-item index="/distance">
                 <span>25km统计</span>

@@ -137,7 +137,7 @@
 
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
     .container{
         height: 100%;
         width: 100%;

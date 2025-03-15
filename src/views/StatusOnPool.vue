@@ -14,7 +14,8 @@
               <el-button :icon="Search" />
             </template>
           </el-input>
-          <el-table v-loading="loadingStatus.T1Table" :data="filterTableData[0]" stripe height="780px">
+          <el-table v-loading="loadingStatus.T1Table" :data="filterTableData[0]" height="780px" :row-class-name="tableRowClassName">
+            <el-table-column prop="POOL_IN_ORDER" label="序号" />
             <el-table-column prop="CAR_ID" label="车牌号" width="300px" />
             <el-table-column prop="POOL_IN_TIME" label="入池时间" />
           </el-table>
@@ -33,7 +34,8 @@
               <el-button :icon="Search" />
             </template>
           </el-input>
-          <el-table v-loading="loadingStatus.T1Table" :data="filterTableData[1]" stripe height="780px">
+          <el-table v-loading="loadingStatus.T1Table" :data="filterTableData[1]" height="780px" :row-class-name="tableRowClassName">
+            <el-table-column prop="POOL_IN_ORDER" label="序号" />
             <el-table-column prop="CAR_ID" label="车牌号" width="300px" />
             <el-table-column prop="POOL_IN_TIME" label="入池时间" />
           </el-table>
@@ -73,6 +75,16 @@ const loadingStatus = reactive({
   T2Table: true,
 });
 
+const tableRowClassName = (
+  { row, rowIndex }
+) => {
+  if (row.TYPE) {
+    return 'used-row'
+  } else {
+    return ''
+  }
+}
+
 watch(searchT1, (val) => {
   searchT1.value = val.toUpperCase();
 });
@@ -93,26 +105,39 @@ onBeforeUnmount(() => {
   clearInterval(timer);
 });
 
+// async function init() {
+//   let params = {
+//     location: "pool",
+//     terminal: "T1",
+//     type: "",
+//     line: "",
+//   };
+//   await axios.get("/api/get_taxi_list", { params }).then((res) => {
+//     console.log(res.data);
+//     loadingStatus.T1Table = false;
+//     poolT1Data.value = res.data;
+//   });
+
+//   params.terminal = "T2";
+//   await axios.get("/api/get_taxi_list", { params }).then((res) => {
+//     poolT2Data.value = res.data;
+//     loadingStatus.T2Table = false;
+//     console.log(poolT2Data.value);
+//   });
+// };
+
 async function init() {
   let params = {
-    location: "pool",
-    terminal: "T1",
-    type: "",
-    line: "",
+    topnum: -1
   };
-  await axios.get("/api/get_taxi_list", { params }).then((res) => {
-    console.log(res.data);
+  await axios.get("/api/pool_in_order_top", { params }).then((res) => {
+    console.log(res);
+    poolT1Data.value = res.data.T1;
     loadingStatus.T1Table = false;
-    poolT1Data.value = res.data;
-  });
-
-  params.terminal = "T2";
-  await axios.get("/api/get_taxi_list", { params }).then((res) => {
-    poolT2Data.value = res.data;
+    poolT2Data.value = res.data.T2;
     loadingStatus.T2Table = false;
-    console.log(poolT2Data.value);
   });
-};
+}
 </script>
 
 <style lang="less" scoped>
@@ -145,5 +170,11 @@ async function init() {
       }
     }
   }
+}
+</style>
+
+<style>
+used-row {
+  --el-table-tr-bg-color: var(--el-color-success-light-9);
 }
 </style>
