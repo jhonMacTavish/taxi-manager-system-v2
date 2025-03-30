@@ -120,11 +120,11 @@
               <el-menu-item index="/offsetsStatistics">
                 <span>授权详情统计</span>
               </el-menu-item>
-              <el-menu-item index="/over70mins">
-                <span>70分钟统计</span>
-              </el-menu-item>
               <el-menu-item index="/distance">
                 <span>25km统计</span>
+              </el-menu-item>
+              <el-menu-item index="/over70mins">
+                <span>超过70分钟统计</span>
               </el-menu-item>
               <el-menu-item index="/statisticsByYear">
                 <span>按年统计</span>

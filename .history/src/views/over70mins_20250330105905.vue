@@ -15,10 +15,10 @@
                       value-format="YYYY-MM-DD HH:mm:ss" :disabled-date="disabledDate" :default-time="defaultTime"/>
                   </template>
 </el-input> -->
-                <el-date-picker :disabled="true" style="margin: 0; width: 360px" v-model="dateTime" type="datetimerange"
+                <el-date-picker style="margin: 0; width: 360px" v-model="dateTime" type="datetimerange"
                   range-separator="To" start-placeholder="开始时间" end-placeholder="结束时间"
                   value-format="YYYY-MM-DD HH:mm:ss" :disabled-date="disabledDate" :default-time="defaultTime" />
-                <el-button :disabled="true" @click="getData()">
+                <el-button @click="getData()">
                   <el-icon>
                     <Search />
                   </el-icon>
@@ -27,7 +27,8 @@
             </div>
           </template>
           <div class="table-box">
-            <el-table v-loading="loadingStatus.dataTable" :data="tableData" :default-sort="{ prop: 'NUM', order: 'descending' }" stripe height="742px">
+            <el-table v-loading="loadingStatus.tableData" :data="tableData"
+              :default-sort="{ prop: 'NUM', order: 'descending' }" stripe height="742px">
               <el-table-column prop="CAR_ID" label="车牌" />
               <el-table-column prop="DATE" label="离开航站楼时间" />
               <el-table-column prop="NUM" label="补偿次数" sortable>
@@ -106,13 +107,19 @@ const filterTabData = ref([]);
 const total = ref(0);
 const currentPage = ref(1);
 const loadingStatus = reactive({
-  dataTable: false,
+  tableData: false,
 });
 const imgSrc = ref("");
 const showImg = ref(false);
 
 const getData = async () => {
-  await axios.get("/api/today_pd_min2").then((res) => {
+  loadingStatus.tableData = true;
+  const params = {
+    startDate: dateTime.value[0],
+    endDate: dateTime.value[1],
+  };
+  console.log(params);
+  await axios.get("/door/getTimeOutReturnByRange", { params }).then((res) => {
     console.log(res.data);
     tableData.value = res.data;
     total.value = Number(res.data.total);

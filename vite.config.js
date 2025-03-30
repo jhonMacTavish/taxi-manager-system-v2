@@ -30,8 +30,8 @@ export default defineConfig({
     base: './',
     proxy: {
       '/door': {
-        target: 'http://10.35.240.225', //测试
-        // target: 'http://10.35.240.211',  //正式
+        // target: 'http://10.35.240.225', //测试
+        target: 'http://10.35.240.211',  //正式
         secure: false,
         changeOrigin: true,
         pathRewrite: {

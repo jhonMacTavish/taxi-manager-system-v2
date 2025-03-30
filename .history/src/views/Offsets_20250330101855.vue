@@ -27,10 +27,10 @@
             </div>
           </template>
           <div class="table-box">
-            <el-table v-loading="loadingStatus.dataTable" :data="tableData" :default-sort="{ prop: 'NUM', order: 'descending' }" stripe height="742px">
+            <el-table v-loading="loadingStatus.dataTable" :data="tableData" stripe height="742px">
               <el-table-column prop="CAR_ID" label="车牌" />
               <el-table-column prop="DATE" label="离开航站楼时间" />
-              <el-table-column prop="NUM" label="补偿次数" sortable>
+              <el-table-column label="补偿次数" sortable>
                 <template #default="scope">
                   <el-text :style="`color: ${scope.row.NUM >= 3 ? 'red' : ''}`">{{ scope.row.NUM }}</el-text>
                 </template>
