@@ -154,7 +154,9 @@ import { ref, onMounted, computed, reactive, onBeforeUnmount } from "vue";
 import { Search, Close } from "@element-plus/icons-vue";
 import dayjs from "dayjs";
 import zhCn from "element-plus/es/locale/lang/zh-cn";
+import { useRoute } from 'vue-router';
 
+const route = useRoute();
 let timer = null;
 const locale = zhCn;
 const showDetail = ref(false);
@@ -543,11 +545,18 @@ const getData = async (today) => {
   });
 };
 
-function init() {
+async function init() {
   dateTime.value[0] = dayjs().startOf("date").format("YYYY-MM-DD HH:mm:ss");
   dateTime.value[1] = dayjs().endOf("date").format("YYYY-MM-DD HH:mm:ss");
-  getData();
+  await getData();
 };
+
+function searchCarID() {
+  if (params.carId) {
+    searchT1.value = params.carId;
+    searchT2.value = params.carId;
+  }
+}
 
 onMounted(() => {
   init();

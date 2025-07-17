@@ -14,10 +14,18 @@
               <el-button :icon="Search" />
             </template>
           </el-input>
-          <el-table v-loading="loadingStatus.T1Table" :data="filterTableData[0]" height="780px" :row-class-name="tableRowClassName">
+          <el-table v-loading="loadingStatus.T1Table" :data="filterTableData[0]" height="780px"
+            :row-class-name="tableRowClassName">
             <el-table-column prop="POOL_IN_ORDER" label="序号" />
-            <el-table-column prop="CAR_ID" label="车牌号" width="300px" />
+            <el-table-column prop="CAR_ID" label="车牌号" width="200px" />
             <el-table-column prop="POOL_IN_TIME" label="入池时间" />
+            <el-table-column align="right">
+              <template #default="scope">
+                <el-button :disabled="!!scope.row.GUOHAO_TIME || !func_no.includes('4')"
+                  style="margin-right: 30px; font-size: 15px" size="small" type="warning"
+                  @click="passTag(scope.row)">过号</el-button>
+              </template>
+            </el-table-column>
           </el-table>
         </el-card>
       </el-col>
@@ -34,15 +42,34 @@
               <el-button :icon="Search" />
             </template>
           </el-input>
-          <el-table v-loading="loadingStatus.T1Table" :data="filterTableData[1]" height="780px" :row-class-name="tableRowClassName">
+          <el-table v-loading="loadingStatus.T1Table" :data="filterTableData[1]" height="780px"
+            :row-class-name="tableRowClassName">
             <el-table-column prop="POOL_IN_ORDER" label="序号" />
-            <el-table-column prop="CAR_ID" label="车牌号" width="300px" />
+            <el-table-column prop="CAR_ID" label="车牌号" width="200px" />
             <el-table-column prop="POOL_IN_TIME" label="入池时间" />
+            <el-table-column align="right">
+              <template #default="scope">
+                <el-button :disabled="!!scope.row.GUOHAO_TIME || !func_no.includes('4')"
+                  style="margin-right: 30px; font-size: 15px" size="small" type="warning"
+                  @click="passTag(scope.row)">过号</el-button>
+              </template>
+            </el-table-column>
           </el-table>
         </el-card>
       </el-col>
     </el-row>
   </div>
+  <el-dialog v-model="dialogVisible" :title="carID" width="500" :show-close="false">
+    <span>过号</span>
+    <template #footer>
+      <div class="dialog-footer">
+        <el-button @click="dialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="confirm()">
+          确认
+        </el-button>
+      </div>
+    </template>
+  </el-dialog>
 </template>
 
 <script setup>
@@ -52,6 +79,10 @@ import { Search } from "@element-plus/icons-vue";
 
 let timer = null;
 
+const carID = ref('');
+const func_no = ref([]);
+const params = ref({});
+const dialogVisible = ref(false);
 const poolT1Data = ref([]);
 const poolT2Data = ref([]);
 const searchT1 = ref("");
@@ -85,6 +116,38 @@ const tableRowClassName = (
   }
 }
 
+const passTag = (row) => {
+  console.log(row);
+  let param = {
+    processid: row.PROCEESS_ID,
+    user: localStorage.getItem("user")
+  }
+  dialogVisible.value = true;
+  carID.value = row.CAR_ID;
+  params.value = param;
+};
+
+const confirm = async () => {
+  let param = params.value;
+  console.log(param);
+  await axios.post("/api/set_guohao", param).then((res) => {
+    console.log(res);
+    init();
+    if (res.data.obj == "success") {
+      ElMessage({
+        message: "操作成功",
+        type: "success",
+      });
+    } else {
+      ElMessage({
+        message: "操作失败",
+        type: "warning",
+      });
+    }
+  });
+  dialogVisible.value = false;
+};
+
 watch(searchT1, (val) => {
   searchT1.value = val.toUpperCase();
 });
@@ -99,32 +162,13 @@ onMounted(() => {
     init();
     console.log(timer);
   }, 10000);
+  func_no.value = localStorage.getItem('func_no');
+  console.log(func_no.value);
 });
 
 onBeforeUnmount(() => {
   clearInterval(timer);
 });
-
-// async function init() {
-//   let params = {
-//     location: "pool",
-//     terminal: "T1",
-//     type: "",
-//     line: "",
-//   };
-//   await axios.get("/api/get_taxi_list", { params }).then((res) => {
-//     console.log(res.data);
-//     loadingStatus.T1Table = false;
-//     poolT1Data.value = res.data;
-//   });
-
-//   params.terminal = "T2";
-//   await axios.get("/api/get_taxi_list", { params }).then((res) => {
-//     poolT2Data.value = res.data;
-//     loadingStatus.T2Table = false;
-//     console.log(poolT2Data.value);
-//   });
-// };
 
 async function init() {
   let params = {

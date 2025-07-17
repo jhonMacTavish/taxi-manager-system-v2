@@ -21,7 +21,7 @@
                 <el-table-column prop="TERMINAL_IN_TIME" label="入池时间" />
                 <el-table-column align="right">
                   <template #default="scope">
-                    <el-button :disabled="scope.row.GIVE_UP_TIME || !func_no.includes('4')" style="margin-right: 30px; font-size: 15px" size="small" type="warning"
+                    <el-button :disabled="!!scope.row.GIVE_UP_TIME || !func_no.includes('4')" style="margin-right: 30px; font-size: 15px" size="small" type="warning"
                       @click="remove(scope.row)">空车驶离</el-button>
                   </template>
                 </el-table-column>
@@ -44,7 +44,7 @@
                 <el-table-column prop="TERMINAL_IN_TIME" label="入池时间" />
                 <el-table-column align="right">
                   <template #default="scope">
-                    <el-button :disabled="scope.row.GIVE_UP_TIME || !func_no.includes('4')" style="margin-right: 30px; font-size: 15px" size="small" type="warning"
+                    <el-button :disabled="!!scope.row.GIVE_UP_TIME || !func_no.includes('4')" style="margin-right: 30px; font-size: 15px" size="small" type="warning"
                       @click="remove(scope.row)">空车驶离</el-button>
                   </template>
                 </el-table-column>
@@ -73,7 +73,7 @@
                 <el-table-column prop="TERMINAL_IN_TIME" label="入池时间" />
                 <el-table-column align="right">
                   <template #default="scope">
-                    <el-button :disabled="scope.row.GIVE_UP_TIME || !func_no.includes('4')" style="margin-right: 30px; font-size: 15px" size="small" type="warning"
+                    <el-button :disabled="!!scope.row.GIVE_UP_TIME || !func_no.includes('4')" style="margin-right: 30px; font-size: 15px" size="small" type="warning"
                       @click="remove(scope.row)">空车驶离</el-button>
                   </template>
                 </el-table-column>
@@ -96,7 +96,7 @@
                 <el-table-column prop="TERMINAL_IN_TIME" label="入池时间" />
                 <el-table-column align="right">
                   <template #default="scope">
-                    <el-button :disabled="scope.row.GIVE_UP_TIME || !func_no.includes('4')" style="margin-right: 30px; font-size: 15px" size="small" type="warning"
+                    <el-button :disabled="!!scope.row.GIVE_UP_TIME || !func_no.includes('4')" style="margin-right: 30px; font-size: 15px" size="small" type="warning"
                       @click="remove(scope.row)">空车驶离</el-button>
                   </template>
                 </el-table-column>
@@ -125,7 +125,7 @@
                 <el-table-column prop="TERMINAL_IN_TIME" label="入池时间" />
                 <el-table-column align="right">
                   <template #default="scope">
-                    <el-button :disabled="scope.row.GIVE_UP_TIME || !func_no.includes('4')" style="margin-right: 30px; font-size: 15px" size="small" type="warning"
+                    <el-button :disabled="!!scope.row.GIVE_UP_TIME || !func_no.includes('4')" style="margin-right: 30px; font-size: 15px" size="small" type="warning"
                       @click="remove(scope.row)">空车驶离</el-button>
                   </template>
                 </el-table-column>
@@ -148,7 +148,7 @@
                 <el-table-column prop="TERMINAL_IN_TIME" label="入池时间" />
                 <el-table-column align="right">
                   <template #default="scope">
-                    <el-button :disabled="scope.row.GIVE_UP_TIME || !func_no.includes('4')" style="margin-right: 30px; font-size: 15px" size="small" type="warning"
+                    <el-button :disabled="!!scope.row.GIVE_UP_TIME || !func_no.includes('4')" style="margin-right: 30px; font-size: 15px" size="small" type="warning"
                       @click="remove(scope.row)">空车驶离</el-button>
                   </template>
                 </el-table-column>
@@ -246,6 +246,7 @@ const tableRowClassName = ({row,rowIndex}) => {
 };
 
 const remove = (row) => {
+  console.log(row);
   let param = {
     processid: row.ID,
     user: localStorage.getItem("user")
@@ -259,8 +260,9 @@ const confirm = async () => {
   let param = params.value;
   console.log(param);
   await axios.post("/api/give_up", param).then((res) => {
+    console.log(res);
     init();
-    if (res.data == "success") {
+    if (res.data.obj == "success") {
       ElMessage({
         message: "操作成功",
         type: "success",

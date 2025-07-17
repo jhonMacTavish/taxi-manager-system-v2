@@ -465,7 +465,7 @@ function drawPath(gpsData) {
       });
 
       marker.on("moving", (e) => {
-        console.log(e.car);
+        // console.log(e.car);
         if (!e.car) return;
         passedLatLngs = e.car && e.car.passedLatLngs;
         let passedLth = passedLatLngs.length;
@@ -825,6 +825,7 @@ onMounted(async () => {
       recordData.value = processData.value[0].THE_DAY_PD;
       imgSrc.value = processData.value[0].PIC;
       dateTime.starttime = processData.value[0].TERMINAL_OUT_TIME;
+      dateTime.endtime = dayjs(processData.value[0].TERMINAL_OUT_TIME).add(2, "hour").format("YYYY-MM-DD HH:mm:ss");
       carNo.value = processData.value[0].CAR_ID;
       reviewTime.value = processData.value[0].TIME_GET_ON;
       mileage.value = processData.value[0].RUN_ODOMETER;
@@ -832,27 +833,27 @@ onMounted(async () => {
 
     params = {
       carid: processData.value[0].CAR_ID,
-      starttime: dayjs(processData.value[0].TERMINAL_OUT_TIME).add(-3, "day").startOf("date").format("YYYY-MM-DD HH:mm:ss"),
-      endtime: dayjs(processData.value[0].TERMINAL_OUT_TIME).add(+2, "hour").format("YYYY-MM-DD HH:mm:ss"),
+      starttime: dateTime.starttime,
+      endtime: dateTime.endtime,
     }
-    await axios.get("/location/meter", { params }).then((res) => {
-      console.log(res);
-      valueData.value = res.data.meters.reverse();
-      tableData.value.length = 0;
-      tableData.value = JSON.parse(JSON.stringify(valueData.value));
-      tableData.value.forEach(item => {
-        let TIME_OFF = dayjs(item.TOCC_INSERT_TIME).diff(dayjs(item.TIME_GET_OFF), 'minutes')
-        item.TIME_OFF = TIME_OFF;
-        let str = item.TOCC_INSERT_TIME;
-        let arr = str.split("");
-        arr.splice(10, 0, " ");
-        str = arr.join("");
-        item.TOCC_INSERT_TIME = str;
-        item.TIME_GET_ON = dayjs(item.TIME_GET_ON).format("MM-DD HH:mm");
-        item.TIME_GET_OFF = dayjs(item.TIME_GET_OFF).format("MM-DD HH:mm");
-        item.TOCC_INSERT_TIME = dayjs(item.TOCC_INSERT_TIME).format("MM-DD HH:mm");
-      });
-    });
+    // await axios.get("/location/meter", { params }).then((res) => {
+    //   console.log(res);
+    //   valueData.value = res.data.meters.reverse();
+    //   tableData.value.length = 0;
+    //   tableData.value = JSON.parse(JSON.stringify(valueData.value));
+    //   tableData.value.forEach(item => {
+    //     let TIME_OFF = dayjs(item.TOCC_INSERT_TIME).diff(dayjs(item.TIME_GET_OFF), 'minutes')
+    //     item.TIME_OFF = TIME_OFF;
+    //     let str = item.TOCC_INSERT_TIME;
+    //     let arr = str.split("");
+    //     arr.splice(10, 0, " ");
+    //     str = arr.join("");
+    //     item.TOCC_INSERT_TIME = str;
+    //     item.TIME_GET_ON = dayjs(item.TIME_GET_ON).format("MM-DD HH:mm");
+    //     item.TIME_GET_OFF = dayjs(item.TIME_GET_OFF).format("MM-DD HH:mm");
+    //     item.TOCC_INSERT_TIME = dayjs(item.TOCC_INSERT_TIME).format("MM-DD HH:mm");
+    //   });
+    // });
 
     params = {
       carid: carNo.value

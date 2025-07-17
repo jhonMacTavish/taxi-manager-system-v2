@@ -88,7 +88,7 @@ const getData = async (today) => {
     let data = [];
     res.data.forEach((item, index) => {
       // item.TYPE == "long" ? (item.TYPE = "长途") : (item.TYPE = "短途");
-      item.TYPE == "long" ? (item.TYPE = "长途") : item.TYPE == "short" ? (item.TYPE = "短途") : '';
+      item.TYPE == "long" ? (item.TYPE = "长途") : item.TYPE == "pd" ? (item.TYPE = "补短") : '';
       data.push(item);
     });
     tableData.value = data;

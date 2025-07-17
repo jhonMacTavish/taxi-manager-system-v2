@@ -32,7 +32,7 @@
               <el-table-column prop="DATE" label="离开航站楼时间" />
               <el-table-column prop="NUM" label="补偿次数" sortable>
                 <template #default="scope">
-                  <el-text :style="`color: ${scope.row.NUM >= 3 ? 'red' : ''}`">{{ scope.row.NUM }}</el-text>
+                  <el-text :style="`color: ${scope.row.NUM >= 3 ? 'red' : ''}; cursor: pointer; text-decoration: underline`" @click="toEligibtHistory(scope.row)">{{ scope.row.NUM }}</el-text>
                 </template>
               </el-table-column>
             </el-table>
@@ -128,6 +128,17 @@ const handleCurrentChange = () => {
 
 const disabledDate = (time) => {
   return time.getTime() > new Date().getTime();
+};
+
+const toEligibtHistory = (row) => {
+  console.log(row);
+  router.push({
+    name: "eligibtHistory",
+    query: {
+      carId: row.CAR_ID,
+      date: row.DATE,
+    },
+  });
 };
 
 const init = async () => {
