@@ -5,10 +5,7 @@ import vue from '@vitejs/plugin-vue'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
-import configs from './src/util/config.js'
-
-const env = 'dev';
-// const env = 'prod';
+import configs 
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -34,7 +31,8 @@ export default defineConfig({
     base: './',
     proxy: {
       '/door': {
-        target: configs[env].url.door, 
+        target: 'http://10.35.240.225', //测试
+        // target: 'http://10.35.240.211',  //正式
         secure: false,
         changeOrigin: true,
         pathRewrite: {
@@ -43,7 +41,8 @@ export default defineConfig({
       },
       // 动态数据，统计数据api
       '/api/v1': {
-        target: configs[env].url.apiV1,
+        target: 'http://10.35.240.225:8081', //测试
+        // target:'http://10.35.240.211:8081', //生产
         secure: false,
         changeOrigin: true,
         pathRewrite: {
@@ -51,7 +50,8 @@ export default defineConfig({
         }
       },
       '/api': {
-        target: configs[env].url.api, 
+        target: 'http://10.35.240.219', //测试
+        // target: 'http://10.35.240.215',  //正式
         secure: false,
         changeOrigin: true,
         pathRewrite: {

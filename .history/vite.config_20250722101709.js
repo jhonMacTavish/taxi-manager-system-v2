@@ -6,6 +6,7 @@ import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import configs from './src/util/config.js'
+import { config } from 'node:process'
 
 const env = 'dev';
 // const env = 'prod';
